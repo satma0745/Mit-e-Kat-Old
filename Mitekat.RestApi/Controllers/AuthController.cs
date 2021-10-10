@@ -1,5 +1,6 @@
 ﻿namespace Mitekat.RestApi.Controllers
 {
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
     using Mitekat.RestApi.DataTransferObjects;
     using Mitekat.RestApi.Services;
@@ -12,13 +13,13 @@
             _userService = userService;
         
         [HttpGet("who-am-i")]
-        public IActionResult GetCurrentUserInfo([FromQuery] string accessToken)
+        public async Task<IActionResult> GetCurrentUserInfo([FromQuery] string accessToken)
         {
             if (accessToken.StartsWith("Bearer"))
             {
                 accessToken = accessToken.Replace("Bearer ", string.Empty);
             }
-            var user = _userService.GetTokenOwnerInfo(accessToken);
+            var user = await _userService.GetTokenOwnerInfo(accessToken);
             
             return user switch
             {
@@ -28,16 +29,16 @@
         }
 
         [HttpPost("register")]
-        public IActionResult RegisterNewUser(RegisterNewUserDto dto)
+        public async Task<IActionResult> RegisterNewUser(RegisterNewUserDto dto)
         {
-            _userService.RegisterNewUser(dto.Username, dto.Password);
+            await _userService.RegisterNewUser(dto.Username, dto.Password);
             return Ok();
         }
 
         [HttpPost("authenticate")]
-        public IActionResult AuthenticateUser(AuthenticateUserDto dto)
+        public async Task<IActionResult> AuthenticateUser(AuthenticateUserDto dto)
         {
-            var accessToken = _userService.AuthenticateUser(dto.Username, dto.Password);
+            var accessToken = await _userService.AuthenticateUser(dto.Username, dto.Password);
             
             return accessToken switch
             {

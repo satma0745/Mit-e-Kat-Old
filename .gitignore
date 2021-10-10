@@ -3,3 +3,5 @@
 
 obj/
 bin/
+
+Mitekat.RestApi/appsettings.Development.json

@@ -15,5 +15,8 @@
 
         public static int GetAccessTokenLifetime(this IConfiguration configuration) =>
             int.Parse(configuration["MITEKAT_AUTH_ACCESS_TOKEN_LIFETIME"]);
+
+        public static string GetDbConnectionString(this IConfiguration configuration) =>
+            configuration["MITEKAT_DB_CONNECTION_STRING"];
     }
 }

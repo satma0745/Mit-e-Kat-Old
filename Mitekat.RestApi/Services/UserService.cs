@@ -1,37 +1,39 @@
 ﻿namespace Mitekat.RestApi.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using Mitekat.RestApi.Entities;
     using Mitekat.RestApi.Helpers;
 
     public class UserService
     {
-        private readonly ICollection<User> _users = new List<User>();
+        private readonly MitekatDbContext _context;
         private readonly AuthTokenHelper _authTokenHelper;
         private readonly PasswordHelper _passwordHelper;
 
-        public UserService(AuthTokenHelper authTokenHelper, PasswordHelper passwordHelper)
+        public UserService(MitekatDbContext context, AuthTokenHelper authTokenHelper, PasswordHelper passwordHelper)
         {
+            _context = context;
             _authTokenHelper = authTokenHelper;
             _passwordHelper = passwordHelper;
         }
 
-        public User GetTokenOwnerInfo(string accessToken)
+        public Task<User> GetTokenOwnerInfo(string accessToken)
         {
             var ownerId = _authTokenHelper.ParseAccessToken(accessToken);
-            return _users.FirstOrDefault(user => user.Id == ownerId);
+            return _context.Users.FirstOrDefaultAsync(user => user.Id == ownerId);
         }
 
-        public void RegisterNewUser(string username, string plainTextPassword)
+        public Task RegisterNewUser(string username, string plainTextPassword)
         {
             var hashedPassword = _passwordHelper.HashPassword(plainTextPassword);
-            _users.Add(new User(Guid.NewGuid(), username, hashedPassword));
+            _context.Users.Add(new User(username, hashedPassword));
+            return _context.SaveChangesAsync();
         }
 
-        public string AuthenticateUser(string username, string plainTextPassword)
+        public async Task<string> AuthenticateUser(string username, string plainTextPassword)
         {
-            var user = _users.FirstOrDefault(user => user.Username == username);
+            var user = await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
             if (user is null)
             {
                 // user with specified username was not found
@@ -47,10 +49,5 @@
             var accessToken = _authTokenHelper.IssueAccessToken(user.Id);
             return accessToken;
         }
-            
     }
-
-    public record User(Guid Id, string Username, UserPassword Password);
-
-    public record UserPassword(string Hash, string Salt);
 }

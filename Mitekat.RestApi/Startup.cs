@@ -16,6 +16,7 @@ namespace Mitekat.RestApi
 
         public void ConfigureServices(IServiceCollection services) =>
             services
+                .AddDbContext(_configuration)
                 .AddHelpers()
                 .AddServices()
                 .AddSwagger(_configuration)
