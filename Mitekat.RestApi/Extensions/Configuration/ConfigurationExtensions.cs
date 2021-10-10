@@ -9,5 +9,11 @@
 
         public static string GetApplicationVersion(this IConfiguration configuration) =>
             configuration["Application:Version"];
+
+        public static string GetAuthSecretKey(this IConfiguration configuration) =>
+            configuration["MITEKAT_AUTH_SECRET_KEY"];
+
+        public static int GetAccessTokenLifetime(this IConfiguration configuration) =>
+            int.Parse(configuration["MITEKAT_AUTH_ACCESS_TOKEN_LIFETIME"]);
     }
 }
