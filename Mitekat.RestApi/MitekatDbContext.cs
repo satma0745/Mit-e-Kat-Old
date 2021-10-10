@@ -8,6 +8,7 @@
     {
         // Private setters are required by EF Core
         public DbSet<User> Users { get; private set; }
+        public DbSet<RefreshToken> RefreshTokens { get; private set; }
 
         public MitekatDbContext(DbContextOptions<MitekatDbContext> options)
             : base(options)

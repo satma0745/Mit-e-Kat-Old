@@ -7,10 +7,10 @@
 
     public class AuthController : ApiControllerBase
     {
-        private readonly UserService _userService;
+        private readonly AuthService _authService;
 
-        public AuthController(UserService userService) =>
-            _userService = userService;
+        public AuthController(AuthService authService) =>
+            _authService = authService;
         
         [HttpGet("who-am-i")]
         public async Task<IActionResult> GetCurrentUserInfo([FromQuery] string accessToken)
@@ -19,7 +19,7 @@
             {
                 accessToken = accessToken.Replace("Bearer ", string.Empty);
             }
-            var user = await _userService.GetTokenOwnerInfo(accessToken);
+            var user = await _authService.GetTokenOwnerInfo(accessToken);
             
             return user switch
             {
@@ -29,21 +29,33 @@
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterNewUser(RegisterNewUserDto dto)
+        public async Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserDto dto)
         {
-            await _userService.RegisterNewUser(dto.Username, dto.Password);
+            await _authService.RegisterNewUser(dto.Username, dto.Password);
             return Ok();
         }
 
         [HttpPost("authenticate")]
-        public async Task<IActionResult> AuthenticateUser(AuthenticateUserDto dto)
+        public async Task<IActionResult> AuthenticateUser([FromBody] AuthenticateUserDto dto)
         {
-            var accessToken = await _userService.AuthenticateUser(dto.Username, dto.Password);
+            var tokenPair = await _authService.AuthenticateUser(dto.Username, dto.Password);
             
-            return accessToken switch
+            return tokenPair switch
             {
                 null => BadRequest("Incorrect username or password."),
-                _ => Ok(accessToken)
+                _ => Ok(new TokenPairDto(tokenPair.AccessToken.EncodedToken, tokenPair.RefreshToken.EncodedToken))
+            };
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshTokenPair([FromBody] RefreshTokenPairDto dto)
+        {
+            var tokenPair = await _authService.RefreshTokenPair(dto.RefreshToken);
+
+            return tokenPair switch
+            {
+                null => BadRequest(),
+                _ => Ok(new TokenPairDto(tokenPair.AccessToken.EncodedToken, tokenPair.RefreshToken.EncodedToken))
             };
         }
     }

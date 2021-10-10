@@ -4,10 +4,9 @@
 
     public class User
     {
-        // Private setters are required by EF Core
-        public Guid Id { get; private set; }
-        public string Username  { get; private set; }
-        public UserPassword Password  { get; private set; }
+        public readonly Guid Id;
+        public readonly string Username;
+        public readonly UserPassword Password;
 
         // For EF Core
         private User()
@@ -24,9 +23,8 @@
     
     public class UserPassword
     {
-        // Private setters are required by EF Core
-        public string Hash { get; private set; }
-        public string Salt { get; private set; }
+        public readonly string Hash;
+        public readonly string Salt;
         
         // For EF Core
         private UserPassword()

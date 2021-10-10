@@ -10,7 +10,7 @@
     internal static class DependencyInjectionExtensions
     {
         public static IServiceCollection AddServices(this IServiceCollection services) =>
-            services.AddScoped<UserService>();
+            services.AddScoped<AuthService>();
 
         public static IServiceCollection AddHelpers(this IServiceCollection services) =>
             services

@@ -7,19 +7,16 @@
 
     internal static class JwtBuilderExtensions
     {
-        public static JwtBuilder SetTokenOwnerId(this JwtBuilder jwtBuilder, Guid ownerId) =>
+        public static JwtBuilder WithOwnerId(this JwtBuilder jwtBuilder, Guid ownerId) =>
             jwtBuilder.AddClaim("sub", ownerId.ToString());
         
-        public static JwtBuilder SetTokenLifetime(this JwtBuilder jwtBuilder, TimeSpan lifetime) =>
+        public static JwtBuilder WithTokenId(this JwtBuilder jwtBuilder, Guid tokenId) =>
+            jwtBuilder.AddClaim("jti", tokenId.ToString());
+        
+        public static JwtBuilder WithLifetime(this JwtBuilder jwtBuilder, TimeSpan lifetime) =>
             jwtBuilder.AddClaim("exp", DateTimeOffset.UtcNow.Add(lifetime).ToUnixTimeSeconds());
 
-        public static string EncodeToken(this JwtBuilder jwtBuilder, IJwtAlgorithm algorithm, string secret) =>
-            jwtBuilder
-                .WithAlgorithm(algorithm)
-                .WithSecret(secret)
-                .Encode();
-
-        public static IDictionary<string, object> DecodeToken(
+        public static IDictionary<string, object> Decode(
             this JwtBuilder jwtBuilder,
             string token,
             IJwtAlgorithm algorithm,
