@@ -4,4 +4,4 @@
 obj/
 bin/
 
-Mitekat.RestApi/appsettings.Development.json
+Backend/Mitekat.RestApi/appsettings.Development.json
