@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{B599
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mitekat.RestApi", "Backend\Mitekat.RestApi\Mitekat.RestApi.csproj", "{E48C0F4A-A7FC-4B9E-9A0C-A1FDFB243623}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mitekat.Persistence", "Backend\Mitekat.Persistence\Mitekat.Persistence.csproj", "{989F9011-15BE-4017-B873-F098D4363DC1}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,9 +50,22 @@ Global
 		{E48C0F4A-A7FC-4B9E-9A0C-A1FDFB243623}.Release|x64.Build.0 = Release|Any CPU
 		{E48C0F4A-A7FC-4B9E-9A0C-A1FDFB243623}.Release|x86.ActiveCfg = Release|Any CPU
 		{E48C0F4A-A7FC-4B9E-9A0C-A1FDFB243623}.Release|x86.Build.0 = Release|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Debug|x64.Build.0 = Debug|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Debug|x86.Build.0 = Debug|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Release|x64.ActiveCfg = Release|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Release|x64.Build.0 = Release|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Release|x86.ActiveCfg = Release|Any CPU
+		{989F9011-15BE-4017-B873-F098D4363DC1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{85D68614-E76A-4A90-B9D3-62831C9F4273} = {AB88814E-2F32-47AB-AEFF-D617F33428CE}
 		{E48C0F4A-A7FC-4B9E-9A0C-A1FDFB243623} = {B5999277-750A-4B4F-B97D-A4BFC882A0E8}
+		{989F9011-15BE-4017-B873-F098D4363DC1} = {B5999277-750A-4B4F-B97D-A4BFC882A0E8}
 	EndGlobalSection
 EndGlobal

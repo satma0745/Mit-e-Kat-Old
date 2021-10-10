@@ -5,6 +5,7 @@ namespace Mitekat.RestApi
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Mitekat.Persistence.Extensions.DependencyInjection;
     using Mitekat.RestApi.Extensions.Configuration;
 
     internal class Startup
@@ -16,7 +17,7 @@ namespace Mitekat.RestApi
 
         public void ConfigureServices(IServiceCollection services) =>
             services
-                .AddDbContext(_configuration)
+                .AddPersistence(_configuration)
                 .AddConfigurationOptions(_configuration)
                 .AddHelpers()
                 .AddServices()

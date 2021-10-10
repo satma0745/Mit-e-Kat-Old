@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Mitekat.RestApi.Migrations
+﻿namespace Mitekat.Persistence.Migrations
 {
-    public partial class AddUsers : Migration
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+    
+    internal partial class AddUsers : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

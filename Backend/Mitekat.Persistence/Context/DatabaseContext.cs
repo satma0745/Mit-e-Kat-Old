@@ -1,16 +1,16 @@
-﻿namespace Mitekat.RestApi
+﻿namespace Mitekat.Persistence.Context
 {
     using System.Reflection;
     using Microsoft.EntityFrameworkCore;
-    using Mitekat.RestApi.Entities;
+    using Mitekat.Persistence.Entities;
 
-    public class MitekatDbContext : DbContext
+    public class DatabaseContext : DbContext
     {
         // Private setters are required by EF Core
         public DbSet<User> Users { get; private set; }
         public DbSet<RefreshToken> RefreshTokens { get; private set; }
 
-        public MitekatDbContext(DbContextOptions<MitekatDbContext> options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
         }

@@ -1,19 +1,19 @@
 ﻿namespace Mitekat.RestApi.Services
 {
     using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
-    using Mitekat.RestApi.Entities;
+    using Mitekat.Persistence.Entities;
+    using Mitekat.Persistence.UnitOfWork;
     using Mitekat.RestApi.Helpers;
 
     public class AuthService
     {
-        private readonly MitekatDbContext _context;
+        private readonly UnitOfWork _unitOfWork;
         private readonly AuthTokenHelper _authTokenHelper;
         private readonly PasswordHelper _passwordHelper;
 
-        public AuthService(MitekatDbContext context, AuthTokenHelper authTokenHelper, PasswordHelper passwordHelper)
+        public AuthService(UnitOfWork unitOfWork, AuthTokenHelper authTokenHelper, PasswordHelper passwordHelper)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
             _authTokenHelper = authTokenHelper;
             _passwordHelper = passwordHelper;
         }
@@ -26,19 +26,21 @@
                 return null;
             }
             
-            return await _context.Users.FirstOrDefaultAsync(user => user.Id == accessTokenInfo.OwnerId);
+            return await _unitOfWork.Users.FindUserAsync(accessTokenInfo.OwnerId);
         }
 
-        public Task RegisterNewUser(string username, string plainTextPassword)
+        public async Task RegisterNewUser(string username, string plainTextPassword)
         {
             var hashedPassword = _passwordHelper.HashPassword(plainTextPassword);
-            _context.Users.Add(new User(username, hashedPassword));
-            return _context.SaveChangesAsync();
+            var user = new User(username, hashedPassword);
+            
+            _unitOfWork.Users.AddUser(user);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task<TokenPair> AuthenticateUser(string username, string plainTextPassword)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
+            var user = await _unitOfWork.Users.FindUserAsync(username);
             if (user is null)
             {
                 // user with specified username was not found
@@ -55,8 +57,8 @@
             var refreshTokenInfo = tokenPair.RefreshToken;
             
             var refreshToken = new RefreshToken(refreshTokenInfo.TokenId, refreshTokenInfo.ExpirationTime);
-            _context.RefreshTokens.Add(refreshToken);
-            await _context.SaveChangesAsync();
+            _unitOfWork.RefreshTokens.AddRefreshToken(refreshToken);
+            await _unitOfWork.SaveChangesAsync();
             
             return tokenPair;
         }
@@ -70,8 +72,7 @@
                 return null;
             }
 
-            var oldRefreshToken = await _context.RefreshTokens
-                .FirstOrDefaultAsync(token => token.TokenId == oldRefreshTokenInfo.TokenId);
+            var oldRefreshToken = await _unitOfWork.RefreshTokens.FindRefreshTokenAsync(oldRefreshTokenInfo.TokenId);
             if (oldRefreshToken is null)
             {
                 // token is not registered
@@ -82,9 +83,8 @@
             var newRefreshTokenInfo = newTokenPair.RefreshToken;
             
             var newRefreshToken = new RefreshToken(newRefreshTokenInfo.TokenId, newRefreshTokenInfo.ExpirationTime);
-            _context.RefreshTokens.Remove(oldRefreshToken);
-            _context.RefreshTokens.Add(newRefreshToken);
-            await _context.SaveChangesAsync();
+            _unitOfWork.RefreshTokens.ReplaceToken(oldRefreshToken, newRefreshToken);
+            await _unitOfWork.SaveChangesAsync();
 
             return newTokenPair;
         }

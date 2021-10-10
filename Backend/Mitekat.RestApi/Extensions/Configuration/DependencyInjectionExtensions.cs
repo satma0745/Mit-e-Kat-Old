@@ -1,7 +1,5 @@
 ﻿namespace Mitekat.RestApi.Extensions.Configuration
 {
-    using System.Reflection;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Mitekat.RestApi.Configuration;
@@ -22,18 +20,5 @@
             services
                 .AddScoped<AuthTokenHelper>()
                 .AddScoped<PasswordHelper>();
-
-        public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration) =>
-            services.AddDbContext<MitekatDbContext>(contextOptions =>
-            {
-                var databaseConfiguration = configuration.GetSection("Database").Get<DatabaseConfiguration>();
-                contextOptions.UseNpgsql(
-                    databaseConfiguration.ConnectionString,
-                    npgsqlOptions =>
-                    {
-                        var migrationsAssembly = Assembly.GetExecutingAssembly().FullName;
-                        npgsqlOptions.MigrationsAssembly(migrationsAssembly);
-                    });
-            });
     }
 }

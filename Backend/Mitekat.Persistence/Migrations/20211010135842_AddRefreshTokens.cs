@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Mitekat.RestApi.Migrations
+﻿namespace Mitekat.Persistence.Migrations
 {
-    public partial class AddRefreshTokens : Migration
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+    
+    internal partial class AddRefreshTokens : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

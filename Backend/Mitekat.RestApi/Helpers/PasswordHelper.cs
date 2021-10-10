@@ -1,7 +1,7 @@
 ﻿namespace Mitekat.RestApi.Helpers
 {
     using BCrypt.Net;
-    using Mitekat.RestApi.Entities;
+    using Mitekat.Persistence.Entities;
 
     public class PasswordHelper
     {

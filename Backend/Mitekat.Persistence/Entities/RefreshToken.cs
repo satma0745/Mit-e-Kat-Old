@@ -1,4 +1,4 @@
-﻿namespace Mitekat.RestApi.Entities
+﻿namespace Mitekat.Persistence.Entities
 {
     using System;
 
