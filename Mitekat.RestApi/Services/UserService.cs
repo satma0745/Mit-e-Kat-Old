@@ -9,9 +9,13 @@
     {
         private readonly ICollection<User> _users = new List<User>();
         private readonly AuthTokenHelper _authTokenHelper;
+        private readonly PasswordHelper _passwordHelper;
 
-        public UserService(AuthTokenHelper authTokenHelper) =>
+        public UserService(AuthTokenHelper authTokenHelper, PasswordHelper passwordHelper)
+        {
             _authTokenHelper = authTokenHelper;
+            _passwordHelper = passwordHelper;
+        }
 
         public User GetTokenOwnerInfo(string accessToken)
         {
@@ -19,16 +23,34 @@
             return _users.FirstOrDefault(user => user.Id == ownerId);
         }
 
-        public void RegisterNewUser(string username, string password) =>
-            _users.Add(new User(Guid.NewGuid(), username, password));
-
-        public string AuthenticateUser(string username, string password)
+        public void RegisterNewUser(string username, string plainTextPassword)
         {
-            var user = _users.FirstOrDefault(user => user.Username == username && user.Password == password);
-            return user is null ? null : _authTokenHelper.IssueAccessToken(user.Id);
+            var hashedPassword = _passwordHelper.HashPassword(plainTextPassword);
+            _users.Add(new User(Guid.NewGuid(), username, hashedPassword));
+        }
+
+        public string AuthenticateUser(string username, string plainTextPassword)
+        {
+            var user = _users.FirstOrDefault(user => user.Username == username);
+            if (user is null)
+            {
+                // user with specified username was not found
+                return null;
+            }
+
+            if (!_passwordHelper.AreEqual(user.Password, plainTextPassword))
+            {
+                // incorrect password provided
+                return null;
+            }
+            
+            var accessToken = _authTokenHelper.IssueAccessToken(user.Id);
+            return accessToken;
         }
             
     }
 
-    public record User(Guid Id, string Username, string Password);
+    public record User(Guid Id, string Username, UserPassword Password);
+
+    public record UserPassword(string Hash, string Salt);
 }

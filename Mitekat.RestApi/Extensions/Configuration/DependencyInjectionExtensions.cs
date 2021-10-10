@@ -10,6 +10,8 @@
             services.AddSingleton<UserService>();
 
         public static IServiceCollection AddHelpers(this IServiceCollection services) =>
-            services.AddSingleton<AuthTokenHelper>();
+            services
+                .AddSingleton<AuthTokenHelper>()
+                .AddSingleton<PasswordHelper>();
     }
 }
