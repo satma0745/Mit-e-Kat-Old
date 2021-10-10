@@ -4,29 +4,25 @@
     using System.Collections.Generic;
     using JWT.Algorithms;
     using JWT.Builder;
-    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Options;
+    using Mitekat.RestApi.Configuration;
     using Mitekat.RestApi.Extensions.Configuration;
 
     public class AuthTokenHelper
     {
         private JwtBuilder Token => JwtBuilder
             .Create()
-            .WithAlgorithm(_algorithm)
-            .WithSecret(_secret)
+            .WithAlgorithm(new HMACSHA512Algorithm())
+            .WithSecret(_authConfiguration.SecretKey)
             .MustVerifySignature();
         
-        private readonly string _secret;
-        private readonly TimeSpan _accessTokenLifetime;
-        private readonly TimeSpan _refreshTokenLifetime;
-        private readonly IJwtAlgorithm _algorithm;
+        private TimeSpan AccessTokenLifetime => TimeSpan.FromMinutes(_authConfiguration.AccessTokenLifetimeInMinutes);
+        private TimeSpan RefreshTokenLifetime => TimeSpan.FromDays(_authConfiguration.RefreshTokenLifetimeInDays);
 
-        public AuthTokenHelper(IConfiguration configuration)
-        {
-            _secret = configuration.GetAuthSecretKey();
-            _accessTokenLifetime = TimeSpan.FromMinutes(configuration.GetAccessTokenLifetime());
-            _refreshTokenLifetime = TimeSpan.FromDays(configuration.GetRefreshTokenLifetime());
-            _algorithm = new HMACSHA512Algorithm();
-        }
+        private readonly AuthConfiguration _authConfiguration;
+
+        public AuthTokenHelper(IOptions<AuthConfiguration> authConfigurationOptions) =>
+            _authConfiguration = authConfigurationOptions.Value;
 
         public AccessTokenInfo ParseAccessToken(string accessToken)
         {
@@ -85,7 +81,7 @@
         {
             var encodedAccessToken = Token
                 .WithOwnerId(ownerId)
-                .WithLifetime(_accessTokenLifetime)
+                .WithLifetime(AccessTokenLifetime)
                 .Encode();
 
             return new AccessTokenInfo
@@ -101,10 +97,10 @@
             var encodedRefreshToken = Token
                 .WithOwnerId(ownerId)
                 .WithTokenId(refreshTokenId)
-                .WithLifetime(_refreshTokenLifetime)
+                .WithLifetime(RefreshTokenLifetime)
                 .Encode();
             
-            var refreshTokenExpirationTime = DateTime.UtcNow.Add(_refreshTokenLifetime);
+            var refreshTokenExpirationTime = DateTime.UtcNow.Add(RefreshTokenLifetime);
             return new RefreshTokenInfo
             {
                 TokenId = refreshTokenId,
