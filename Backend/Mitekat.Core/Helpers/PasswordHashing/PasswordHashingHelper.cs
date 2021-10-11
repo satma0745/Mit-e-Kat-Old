@@ -1,9 +1,9 @@
-﻿namespace Mitekat.RestApi.Helpers
+﻿namespace Mitekat.Core.Helpers.PasswordHashing
 {
     using BCrypt.Net;
-    using Mitekat.Persistence.Entities;
+    using Mitekat.Core.Persistence.Entities;
 
-    public class PasswordHelper
+    internal class PasswordHashingHelper : IPasswordHashingHelper
     {
         public UserPassword HashPassword(string plaintTextPassword) =>
             HashPassword(plaintTextPassword, BCrypt.GenerateSalt());
@@ -11,7 +11,7 @@
         public bool AreEqual(UserPassword hashedPassword, string plainTextPassword) =>
             HashPassword(plainTextPassword, hashedPassword.Salt).Hash == hashedPassword.Hash;
         
-        private UserPassword HashPassword(string plaintTextPassword, string salt)
+        private static UserPassword HashPassword(string plaintTextPassword, string salt)
         {
             var hash = BCrypt.HashPassword(plaintTextPassword, salt);
             return new UserPassword(hash, salt);

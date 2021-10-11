@@ -1,10 +1,9 @@
-﻿namespace Mitekat.RestApi.Extensions.Configuration
+﻿namespace Mitekat.RestApi.Extensions
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
-    using Mitekat.RestApi.Configuration;
 
     internal static class SwaggerConfigurationExtensions
     {
@@ -36,5 +35,11 @@
                     
                     options.SwaggerEndpoint(url, name);
                 });
+    }
+    
+    internal class ApplicationConfiguration
+    {
+        public string Title { get; set; }
+        public string Version { get; set; }
     }
 }

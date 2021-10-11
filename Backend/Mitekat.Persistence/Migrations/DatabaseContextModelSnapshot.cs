@@ -17,7 +17,7 @@
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Mitekat.Persistence.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Mitekat.Core.Persistence.Entities.RefreshTokenEntity", b =>
                 {
                     b.Property<Guid>("TokenId")
                         .ValueGeneratedOnAdd()
@@ -33,7 +33,7 @@
                     b.ToTable("refresh_tokens");
                 });
 
-            modelBuilder.Entity("Mitekat.Persistence.Entities.User", b =>
+            modelBuilder.Entity("Mitekat.Core.Persistence.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,9 +54,9 @@
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("Mitekat.Persistence.Entities.User", b =>
+            modelBuilder.Entity("Mitekat.Core.Persistence.Entities.UserEntity", b =>
                 {
-                    b.OwnsOne("Mitekat.Persistence.Entities.UserPassword", "Password", b1 =>
+                    b.OwnsOne("Mitekat.Core.Persistence.Entities.UserPassword", "Password", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uuid");

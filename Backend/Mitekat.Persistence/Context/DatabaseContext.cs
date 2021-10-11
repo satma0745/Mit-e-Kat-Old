@@ -2,13 +2,13 @@
 {
     using System.Reflection;
     using Microsoft.EntityFrameworkCore;
-    using Mitekat.Persistence.Entities;
+    using Mitekat.Core.Persistence.Entities;
 
-    public class DatabaseContext : DbContext
+    internal class DatabaseContext : DbContext
     {
         // Private setters are required by EF Core
-        public DbSet<User> Users { get; private set; }
-        public DbSet<RefreshToken> RefreshTokens { get; private set; }
+        public DbSet<UserEntity> Users { get; private set; }
+        public DbSet<RefreshTokenEntity> RefreshTokens { get; private set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)

@@ -2,14 +2,14 @@
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
+    using Mitekat.Core.Services;
     using Mitekat.RestApi.DataTransferObjects;
-    using Mitekat.RestApi.Services;
 
     public class AuthController : ApiControllerBase
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
-        public AuthController(AuthService authService) =>
+        public AuthController(IAuthService authService) =>
             _authService = authService;
         
         [HttpGet("who-am-i")]
@@ -43,7 +43,7 @@
             return tokenPair switch
             {
                 null => BadRequest("Incorrect username or password."),
-                _ => Ok(new TokenPairDto(tokenPair.AccessToken.EncodedToken, tokenPair.RefreshToken.EncodedToken))
+                _ => Ok(new TokenPairDto(tokenPair))
             };
         }
 
@@ -55,7 +55,7 @@
             return tokenPair switch
             {
                 null => BadRequest(),
-                _ => Ok(new TokenPairDto(tokenPair.AccessToken.EncodedToken, tokenPair.RefreshToken.EncodedToken))
+                _ => Ok(new TokenPairDto(tokenPair))
             };
         }
     }

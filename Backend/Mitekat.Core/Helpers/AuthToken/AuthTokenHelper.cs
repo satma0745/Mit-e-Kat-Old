@@ -1,14 +1,13 @@
-﻿namespace Mitekat.RestApi.Helpers
+﻿namespace Mitekat.Core.Helpers.AuthToken
 {
     using System;
     using System.Collections.Generic;
     using JWT.Algorithms;
     using JWT.Builder;
     using Microsoft.Extensions.Options;
-    using Mitekat.RestApi.Configuration;
-    using Mitekat.RestApi.Extensions.Configuration;
+    using Mitekat.Core.Extensions;
 
-    public class AuthTokenHelper
+    internal class AuthTokenHelper : IAuthTokenHelper
     {
         private JwtBuilder Token => JwtBuilder
             .Create()
@@ -70,8 +69,8 @@
             }
         }
 
-        public TokenPair IssueTokenPair(Guid ownerId) =>
-            new TokenPair
+        public TokenPairInfo IssueTokenPair(Guid ownerId) =>
+            new TokenPairInfo
             {
                 AccessToken = IssueAccessToken(ownerId),
                 RefreshToken = IssueRefreshToken(ownerId)
@@ -109,25 +108,5 @@
                 EncodedToken = encodedRefreshToken
             };
         }
-    }
-
-    public class TokenPair
-    {
-        public AccessTokenInfo AccessToken { get; init; }
-        public RefreshTokenInfo RefreshToken { get; init; }
-    }
-
-    public class AccessTokenInfo
-    {
-        public Guid OwnerId { get; init; }
-        public string EncodedToken { get; init; }
-    }
-
-    public class RefreshTokenInfo
-    {
-        public Guid TokenId { get; init; }
-        public Guid OwnerId { get; init; }
-        public DateTime ExpirationTime { get; init; }
-        public string EncodedToken { get; init; }
     }
 }

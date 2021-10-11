@@ -1,19 +1,19 @@
-﻿namespace Mitekat.Persistence.Entities
+﻿namespace Mitekat.Core.Persistence.Entities
 {
     using System;
 
-    public class User
+    public class UserEntity
     {
         public readonly Guid Id;
         public readonly string Username;
         public readonly UserPassword Password;
 
         // For EF Core
-        private User()
+        private UserEntity()
         {
         }
 
-        public User(string username, UserPassword password)
+        public UserEntity(string username, UserPassword password)
         {
             Id = Guid.NewGuid();
             Username = username;

@@ -5,8 +5,9 @@ namespace Mitekat.RestApi
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Mitekat.Core.Extensions.DependencyInjection;
     using Mitekat.Persistence.Extensions.DependencyInjection;
-    using Mitekat.RestApi.Extensions.Configuration;
+    using Mitekat.RestApi.Extensions;
 
     internal class Startup
     {
@@ -17,10 +18,8 @@ namespace Mitekat.RestApi
 
         public void ConfigureServices(IServiceCollection services) =>
             services
+                .AddCore(_configuration)
                 .AddPersistence(_configuration)
-                .AddConfigurationOptions(_configuration)
-                .AddHelpers()
-                .AddServices()
                 .AddSwagger(_configuration)
                 .AddControllers();
 

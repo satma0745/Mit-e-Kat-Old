@@ -1,4 +1,4 @@
-﻿namespace Mitekat.RestApi.Extensions.Configuration
+﻿namespace Mitekat.Core.Extensions
 {
     using System;
     using System.Collections.Generic;

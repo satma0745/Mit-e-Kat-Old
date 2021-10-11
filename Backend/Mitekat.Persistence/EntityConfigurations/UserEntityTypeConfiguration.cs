@@ -1,11 +1,12 @@
-﻿namespace Mitekat.Persistence.Entities
+﻿namespace Mitekat.Persistence.EntityConfigurations
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Mitekat.Core.Persistence.Entities;
 
-    internal class UserEntityTypeConfiguration: IEntityTypeConfiguration<User>
+    internal class UserEntityTypeConfiguration: IEntityTypeConfiguration<UserEntity>
     {
-        public void Configure(EntityTypeBuilder<User> userBuilder)
+        public void Configure(EntityTypeBuilder<UserEntity> userBuilder)
         {
             userBuilder.ToTable("users");
             

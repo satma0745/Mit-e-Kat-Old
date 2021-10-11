@@ -1,6 +1,6 @@
-﻿namespace Mitekat.RestApi.Configuration
+﻿namespace Mitekat.Core.Helpers.AuthToken
 {
-    public class AuthConfiguration
+    internal class AuthConfiguration
     {
         public string SecretKey { get; set; }
         public int AccessTokenLifetimeInMinutes { get; set; }

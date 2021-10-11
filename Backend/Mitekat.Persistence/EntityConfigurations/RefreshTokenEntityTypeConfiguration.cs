@@ -1,11 +1,12 @@
-﻿namespace Mitekat.Persistence.Entities
+﻿namespace Mitekat.Persistence.EntityConfigurations
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Mitekat.Core.Persistence.Entities;
 
-    internal class RefreshTokenEntityTypeConfiguration : IEntityTypeConfiguration<RefreshToken>
+    internal class RefreshTokenEntityTypeConfiguration : IEntityTypeConfiguration<RefreshTokenEntity>
     {
-        public void Configure(EntityTypeBuilder<RefreshToken> builder)
+        public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder)
         {
             builder.ToTable("refresh_tokens");
             builder.HasKey(token => token.TokenId);

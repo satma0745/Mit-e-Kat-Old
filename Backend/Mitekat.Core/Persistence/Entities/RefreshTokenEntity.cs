@@ -1,18 +1,18 @@
-﻿namespace Mitekat.Persistence.Entities
+﻿namespace Mitekat.Core.Persistence.Entities
 {
     using System;
 
-    public class RefreshToken
+    public class RefreshTokenEntity
     {
         public readonly Guid TokenId;
         public readonly DateTime ExpirationTime;
 
         // For EF Core
-        private RefreshToken()
+        private RefreshTokenEntity()
         {
         }
 
-        public RefreshToken(Guid tokenId, DateTime expirationTime)
+        public RefreshTokenEntity(Guid tokenId, DateTime expirationTime)
         {
             TokenId = tokenId;
             ExpirationTime = expirationTime;

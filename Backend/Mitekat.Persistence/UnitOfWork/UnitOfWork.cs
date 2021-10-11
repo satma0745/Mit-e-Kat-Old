@@ -1,13 +1,15 @@
 ﻿namespace Mitekat.Persistence.UnitOfWork
 {
     using System.Threading.Tasks;
+    using Mitekat.Core.Persistence.Repositories;
+    using Mitekat.Core.Persistence.UnitOfWork;
     using Mitekat.Persistence.Context;
     using Mitekat.Persistence.Repositories;
 
-    public class UnitOfWork
+    internal class UnitOfWork : IUnitOfWork
     {
-        public readonly UsersRepository Users;
-        public readonly RefreshTokensRepository RefreshTokens;
+        public IUsersRepository Users { get; }
+        public IRefreshTokensRepository RefreshTokens { get; }
         
         private readonly DatabaseContext _context;
 

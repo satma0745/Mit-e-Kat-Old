@@ -3,26 +3,27 @@
     using System;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Mitekat.Core.Persistence.Entities;
+    using Mitekat.Core.Persistence.Repositories;
     using Mitekat.Persistence.Context;
-    using Mitekat.Persistence.Entities;
 
-    public class RefreshTokensRepository
+    internal class RefreshTokensRepository : IRefreshTokensRepository
     {
         private readonly DatabaseContext _context;
 
         public RefreshTokensRepository(DatabaseContext context) =>
             _context = context;
 
-        public Task<RefreshToken> FindRefreshTokenAsync(Guid tokenId) =>
+        public Task<RefreshTokenEntity> FindAsync(Guid tokenId) =>
             _context.RefreshTokens.FirstOrDefaultAsync(token => token.TokenId == tokenId);
 
-        public void ReplaceToken(RefreshToken existingRefreshToken, RefreshToken newRefreshToken)
+        public void Replace(RefreshTokenEntity existingRefreshToken, RefreshTokenEntity newRefreshToken)
         {
             _context.RefreshTokens.Remove(existingRefreshToken);
             _context.RefreshTokens.Add(newRefreshToken);
         }
 
-        public void AddRefreshToken(RefreshToken refreshToken) =>
+        public void Add(RefreshTokenEntity refreshToken) =>
             _context.RefreshTokens.Add(refreshToken);
     }
 }
