@@ -6,6 +6,7 @@ namespace Mitekat.RestApi
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Mitekat.Core.Extensions.DependencyInjection;
+    using Mitekat.Helpers.Extensions.DependencyInjection;
     using Mitekat.Persistence.Extensions.DependencyInjection;
     using Mitekat.RestApi.Extensions;
 
@@ -18,7 +19,8 @@ namespace Mitekat.RestApi
 
         public void ConfigureServices(IServiceCollection services) =>
             services
-                .AddCore(_configuration)
+                .AddCore()
+                .AddHelpers(_configuration)
                 .AddPersistence(_configuration)
                 .AddSwagger(_configuration)
                 .AddControllers();

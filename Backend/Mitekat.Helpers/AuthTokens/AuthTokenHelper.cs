@@ -1,11 +1,13 @@
-﻿namespace Mitekat.Core.Helpers.AuthToken
+﻿namespace Mitekat.Helpers.AuthTokens
 {
     using System;
     using System.Collections.Generic;
     using JWT.Algorithms;
     using JWT.Builder;
     using Microsoft.Extensions.Options;
-    using Mitekat.Core.Extensions;
+    using Mitekat.Core.Helpers.AuthToken;
+    using Mitekat.Helpers.Configuration;
+    using Mitekat.Helpers.Extensions;
 
     internal class AuthTokenHelper : IAuthTokenHelper
     {
@@ -23,7 +25,7 @@
         public AuthTokenHelper(IOptions<AuthConfiguration> authConfigurationOptions) =>
             _authConfiguration = authConfigurationOptions.Value;
 
-        public AccessTokenInfo ParseAccessToken(string accessToken)
+        public IAccessTokenInfo ParseAccessToken(string accessToken)
         {
             try
             {
@@ -42,7 +44,7 @@
             }
         }
 
-        public RefreshTokenInfo ParseRefreshToken(string refreshToken)
+        public IRefreshTokenInfo ParseRefreshToken(string refreshToken)
         {
             try
             {
@@ -69,7 +71,7 @@
             }
         }
 
-        public TokenPairInfo IssueTokenPair(Guid ownerId) =>
+        public ITokenPairInfo IssueTokenPair(Guid ownerId) =>
             new TokenPairInfo
             {
                 AccessToken = IssueAccessToken(ownerId),

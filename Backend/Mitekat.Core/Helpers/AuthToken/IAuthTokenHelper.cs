@@ -2,12 +2,10 @@
 {
     using System;
 
-    internal interface IAuthTokenHelper
+    public interface IAuthTokenHelper
     {
-        public TokenPairInfo IssueTokenPair(Guid ownerId);
-        
-        public AccessTokenInfo ParseAccessToken(string accessToken);
-
-        public RefreshTokenInfo ParseRefreshToken(string refreshToken);
+        ITokenPairInfo IssueTokenPair(Guid ownerId);
+        IAccessTokenInfo ParseAccessToken(string accessToken);
+        IRefreshTokenInfo ParseRefreshToken(string refreshToken);
     }
 }

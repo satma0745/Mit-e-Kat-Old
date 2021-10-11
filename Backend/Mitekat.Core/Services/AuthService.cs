@@ -99,7 +99,7 @@
         public string AccessToken { get; }
         public string RefreshToken { get; }
 
-        public TokenPair(TokenPairInfo tokenPairInfo)
+        public TokenPair(ITokenPairInfo tokenPairInfo)
         {
             AccessToken = tokenPairInfo.AccessToken.EncodedToken;
             RefreshToken = tokenPairInfo.RefreshToken.EncodedToken;

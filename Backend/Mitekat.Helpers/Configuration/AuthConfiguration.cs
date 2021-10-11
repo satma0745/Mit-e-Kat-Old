@@ -1,4 +1,4 @@
-﻿namespace Mitekat.Core.Helpers.AuthToken
+﻿namespace Mitekat.Helpers.Configuration
 {
     internal class AuthConfiguration
     {

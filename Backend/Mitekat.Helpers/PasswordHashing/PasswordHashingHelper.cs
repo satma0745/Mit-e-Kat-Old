@@ -1,6 +1,7 @@
-﻿namespace Mitekat.Core.Helpers.PasswordHashing
+﻿namespace Mitekat.Helpers.PasswordHashing
 {
     using BCrypt.Net;
+    using Mitekat.Core.Helpers.PasswordHashing;
     using Mitekat.Core.Persistence.Entities;
 
     internal class PasswordHashingHelper : IPasswordHashingHelper

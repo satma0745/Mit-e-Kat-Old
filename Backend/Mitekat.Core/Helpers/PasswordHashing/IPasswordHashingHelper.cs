@@ -2,7 +2,7 @@
 {
     using Mitekat.Core.Persistence.Entities;
 
-    internal interface IPasswordHashingHelper
+    public interface IPasswordHashingHelper
     {
         UserPassword HashPassword(string plaintTextPassword);
         
