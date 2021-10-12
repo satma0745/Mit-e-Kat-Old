@@ -23,6 +23,7 @@ namespace Mitekat.RestApi
                 .AddHelpers(_configuration)
                 .AddPersistence(_configuration)
                 .AddSwagger(_configuration)
+                .AddAuthentication(_configuration)
                 .AddControllers();
 
         public void Configure(IApplicationBuilder application, IWebHostEnvironment environment)
@@ -36,6 +37,7 @@ namespace Mitekat.RestApi
 
             application
                 .UseRouting()
+                .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(endpoints => endpoints.MapControllers());
         }

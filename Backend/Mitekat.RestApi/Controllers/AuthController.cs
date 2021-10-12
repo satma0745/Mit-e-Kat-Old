@@ -1,6 +1,7 @@
 ﻿namespace Mitekat.RestApi.Controllers
 {
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Mitekat.Core.Services;
     using Mitekat.RestApi.DataTransferObjects;
@@ -12,14 +13,11 @@
         public AuthController(IAuthService authService) =>
             _authService = authService;
         
+        [Authorize]
         [HttpGet("who-am-i")]
-        public async Task<IActionResult> GetCurrentUserInfo([FromQuery] string accessToken)
+        public async Task<IActionResult> GetCurrentUserInfo()
         {
-            if (accessToken.StartsWith("Bearer"))
-            {
-                accessToken = accessToken.Replace("Bearer ", string.Empty);
-            }
-            var user = await _authService.GetTokenOwnerInfo(accessToken);
+            var user = await _authService.GetTokenOwnerInfo(AccessToken);
             
             return user switch
             {
