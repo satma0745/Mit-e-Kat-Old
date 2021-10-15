@@ -1,7 +1,6 @@
 ﻿namespace Mitekat.RestApi.DataTransferObjects
 {
     using System;
-    using Mitekat.Core.Services;
 
     public record CurrentUserInfoDto(Guid Id, string Username);
     
@@ -10,10 +9,10 @@
         public string AccessToken { get; }
         public string RefreshToken { get; }
 
-        public TokenPairDto(ITokenPair tokenPair)
+        public TokenPairDto(string accessToken, string refreshToken)
         {
-            AccessToken = tokenPair.AccessToken;
-            RefreshToken = tokenPair.RefreshToken;
+            AccessToken = accessToken;
+            RefreshToken = refreshToken;
         }
     }
     

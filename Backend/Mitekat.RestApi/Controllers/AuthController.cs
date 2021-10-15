@@ -1,59 +1,79 @@
 ﻿namespace Mitekat.RestApi.Controllers
 {
     using System.Threading.Tasks;
+    using MediatR;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Mitekat.Core.Services;
+    using Mitekat.Core.Features.Auth.Requests;
     using Mitekat.RestApi.DataTransferObjects;
 
     public class AuthController : ApiControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly IMediator _mediator;
 
-        public AuthController(IAuthService authService) =>
-            _authService = authService;
+        public AuthController(IMediator mediator) =>
+            _mediator = mediator;
         
         [Authorize]
         [HttpGet("who-am-i")]
         public async Task<IActionResult> GetCurrentUserInfo()
         {
-            var user = await _authService.GetTokenOwnerInfo(AccessToken);
+            var request = new GetTokenOwnerInfoRequest
+            {
+                AccessToken = AccessToken
+            };
+            var ownerInfo = await _mediator.Send(request);
             
-            return user switch
+            return ownerInfo switch
             {
                 null => Unauthorized(),
-                _ => Ok(new CurrentUserInfoDto(user.Id, user.Username))
+                _ => Ok(new CurrentUserInfoDto(ownerInfo.Id, ownerInfo.Username))
             };
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserDto dto)
         {
-            await _authService.RegisterNewUser(dto.Username, dto.Password);
+            var request = new RegisterNewUserRequest
+            {
+                Username = dto.Username,
+                Password = dto.Password
+            };
+            await _mediator.Send(request);
+            
             return Ok();
         }
 
         [HttpPost("authenticate")]
         public async Task<IActionResult> AuthenticateUser([FromBody] AuthenticateUserDto dto)
         {
-            var tokenPair = await _authService.AuthenticateUser(dto.Username, dto.Password);
+            var request = new AuthenticateUserRequest
+            {
+                Username = dto.Username,
+                Password = dto.Password
+            };
+            var tokenPair = await _mediator.Send(request);
             
             return tokenPair switch
             {
                 null => BadRequest("Incorrect username or password."),
-                _ => Ok(new TokenPairDto(tokenPair))
+                _ => Ok(new TokenPairDto(tokenPair.AccessToken, tokenPair.RefreshToken))
             };
         }
 
         [HttpPost("refresh")]
         public async Task<IActionResult> RefreshTokenPair([FromBody] RefreshTokenPairDto dto)
         {
-            var tokenPair = await _authService.RefreshTokenPair(dto.RefreshToken);
+            var request = new RefreshTokenPairRequest
+            {
+                RefreshToken = dto.RefreshToken
+            };
+            var tokenPair = await _mediator.Send(request);
 
             return tokenPair switch
             {
                 null => BadRequest(),
-                _ => Ok(new TokenPairDto(tokenPair))
+                _ => Ok(new TokenPairDto(tokenPair.AccessToken, tokenPair.RefreshToken))
             };
         }
     }
