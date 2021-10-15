@@ -22,9 +22,7 @@ namespace Mitekat.RestApi
                 .AddCore()
                 .AddHelpers(_configuration)
                 .AddPersistence(_configuration)
-                .AddSwagger(_configuration)
-                .AddAuthentication(_configuration)
-                .AddControllers();
+                .AddWebApi(_configuration);
 
         public void Configure(IApplicationBuilder application, IWebHostEnvironment environment)
         {

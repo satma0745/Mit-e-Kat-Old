@@ -3,8 +3,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
-    using Mitekat.Core.Features.Auth.Requests;
-    using Mitekat.Core.Features.Auth.Responses;
     using Mitekat.Core.Helpers.AuthToken;
     using Mitekat.Core.Persistence.UnitOfWork;
 
@@ -29,11 +27,7 @@
             
             var tokenOwner = await _unitOfWork.Users.FindAsync(accessTokenInfo.OwnerId);
 
-            return new UserInfoResponse
-            {
-                Id = tokenOwner.Id,
-                Username = tokenOwner.Username
-            };
+            return UserInfoResponse.FromUserEntity(tokenOwner);
         }
     }
 }

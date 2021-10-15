@@ -1,24 +1,35 @@
 ﻿namespace Mitekat.RestApi.DataTransferObjects
 {
     using System;
+    using Mitekat.Core.Features.Auth;
 
-    public record CurrentUserInfoDto(Guid Id, string Username);
-    
-    public class TokenPairDto
+    public record CurrentUserInfoDto(Guid Id, string Username)
     {
-        public string AccessToken { get; }
-        public string RefreshToken { get; }
-
-        public TokenPairDto(string accessToken, string refreshToken)
-        {
-            AccessToken = accessToken;
-            RefreshToken = refreshToken;
-        }
+        public static CurrentUserInfoDto FromUserInfoResponse(UserInfoResponse userInfoResponse) =>
+            new(userInfoResponse.Id, userInfoResponse.Username);
     }
     
-    public record RegisterNewUserDto(string Username, string Password);
+    public record TokenPairDto(string AccessToken, string RefreshToken)
+    {
+        public static TokenPairDto FromTokenPairResponse(TokenPairResponse tokenPairResponse) =>
+            new(tokenPairResponse.AccessToken, tokenPairResponse.RefreshToken);
+    }
 
-    public record AuthenticateUserDto(string Username, string Password);
+    public record RegisterNewUserDto(string Username, string Password)
+    {
+        public RegisterNewUserRequest ToRegisterNewUserRequest() =>
+            new(Username, Password);
+    }
 
-    public record RefreshTokenPairDto(string RefreshToken);
+    public record AuthenticateUserDto(string Username, string Password)
+    {
+        public AuthenticateUserRequest ToAuthenticateUserRequest() =>
+            new(Username, Password);
+    }
+
+    public record RefreshTokenPairDto(string RefreshToken)
+    {
+        public RefreshTokenPairRequest ToRefreshTokenPairRequest() =>
+            new(RefreshToken);
+    }
 }

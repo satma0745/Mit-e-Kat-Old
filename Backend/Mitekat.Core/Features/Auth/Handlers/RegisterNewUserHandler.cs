@@ -3,7 +3,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
-    using Mitekat.Core.Features.Auth.Requests;
     using Mitekat.Core.Helpers.PasswordHashing;
     using Mitekat.Core.Persistence.Entities;
     using Mitekat.Core.Persistence.UnitOfWork;
