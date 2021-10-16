@@ -6,6 +6,7 @@
     using JWT.Builder;
     using Microsoft.Extensions.Options;
     using Mitekat.Core.Helpers.AuthToken;
+    using Mitekat.Core.Persistence.Entities;
     using Mitekat.Helpers.Configuration;
     using Mitekat.Helpers.Extensions;
 
@@ -30,11 +31,13 @@
             try
             {
                 var payload = Token.Decode<IDictionary<string, object>>(accessToken);
-                var ownerId = Guid.Parse((string) payload!["sub"]);
+                var ownerId = Guid.Parse((string) payload["sub"]);
+                var ownerRole = (UserRole) Enum.Parse(typeof(UserRole), (string) payload["role"]);
 
                 return new AccessTokenInfo
                 {
                     OwnerId = ownerId,
+                    OwnerRole = ownerRole,
                     EncodedToken = accessToken
                 };
             }
@@ -71,23 +74,25 @@
             }
         }
 
-        public ITokenPairInfo IssueTokenPair(Guid ownerId) =>
+        public ITokenPairInfo IssueTokenPair(Guid ownerId, UserRole ownerRole) =>
             new TokenPairInfo
             {
-                AccessToken = IssueAccessToken(ownerId),
+                AccessToken = IssueAccessToken(ownerId, ownerRole),
                 RefreshToken = IssueRefreshToken(ownerId)
             };
 
-        private AccessTokenInfo IssueAccessToken(Guid ownerId)
+        private AccessTokenInfo IssueAccessToken(Guid ownerId, UserRole ownerRole)
         {
             var encodedAccessToken = Token
                 .WithOwnerId(ownerId)
+                .WithOwnerRole(ownerRole)
                 .WithLifetime(AccessTokenLifetime)
                 .Encode();
 
             return new AccessTokenInfo
             {
                 OwnerId = ownerId,
+                OwnerRole = ownerRole,
                 EncodedToken = encodedAccessToken
             };
         }

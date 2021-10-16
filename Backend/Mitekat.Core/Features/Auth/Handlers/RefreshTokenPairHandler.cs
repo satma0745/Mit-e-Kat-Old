@@ -34,7 +34,14 @@
                 return null;
             }
 
-            var newTokenPairInfo = _authTokenHelper.IssueTokenPair(oldRefreshTokenInfo.OwnerId);
+            var tokenOwner = await _unitOfWork.Users.FindAsync(oldRefreshTokenInfo.OwnerId);
+            if (tokenOwner is null)
+            {
+                // token owner does not exist
+                return null;
+            }
+
+            var newTokenPairInfo = _authTokenHelper.IssueTokenPair(tokenOwner.Id, tokenOwner.Role);
             var newRefreshTokenInfo = newTokenPairInfo.RefreshToken;
             
             var newRefreshToken = new RefreshTokenEntity(newRefreshTokenInfo.TokenId, newRefreshTokenInfo.ExpirationTime);

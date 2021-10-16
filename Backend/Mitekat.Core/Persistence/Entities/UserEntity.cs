@@ -7,17 +7,19 @@
         public readonly Guid Id;
         public readonly string Username;
         public readonly UserPassword Password;
+        public readonly UserRole Role;
 
         // For EF Core
         private UserEntity()
         {
         }
 
-        public UserEntity(string username, UserPassword password)
+        public UserEntity(string username, UserPassword password, UserRole role = UserRole.User)
         {
             Id = Guid.NewGuid();
             Username = username;
             Password = password;
+            Role = role;
         }
     }
     
@@ -37,4 +39,6 @@
             Salt = salt;
         }
     }
+
+    public enum UserRole { User, Moderator, Admin }
 }

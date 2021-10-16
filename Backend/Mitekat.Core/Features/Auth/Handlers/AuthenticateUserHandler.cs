@@ -39,7 +39,7 @@
                 return null;
             }
             
-            var tokenPairInfo = _authTokenHelper.IssueTokenPair(user.Id);
+            var tokenPairInfo = _authTokenHelper.IssueTokenPair(user.Id, user.Role);
             var refreshTokenInfo = tokenPairInfo.RefreshToken;
             
             var refreshToken = new RefreshTokenEntity(refreshTokenInfo.TokenId, refreshTokenInfo.ExpirationTime);

@@ -10,9 +10,9 @@
             new (tokenPairInfo.AccessToken.EncodedToken, tokenPairInfo.RefreshToken.EncodedToken);
     }
 
-    public record UserInfoResponse(Guid Id, string Username)
+    public record UserInfoResponse(Guid Id, string Username, UserRole Role)
     {
         public static UserInfoResponse FromUserEntity(UserEntity userEntity) =>
-            new (userEntity.Id, userEntity.Username);
+            new (userEntity.Id, userEntity.Username, userEntity.Role);
     }
 }

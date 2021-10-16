@@ -3,10 +3,10 @@
     using System;
     using Mitekat.Core.Features.Auth;
 
-    public record CurrentUserInfoDto(Guid Id, string Username)
+    public record CurrentUserInfoDto(Guid Id, string Username, string Role)
     {
         public static CurrentUserInfoDto FromUserInfoResponse(UserInfoResponse userInfoResponse) =>
-            new(userInfoResponse.Id, userInfoResponse.Username);
+            new(userInfoResponse.Id, userInfoResponse.Username, userInfoResponse.Role.ToString());
     }
     
     public record TokenPairDto(string AccessToken, string RefreshToken)

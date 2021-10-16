@@ -40,6 +40,13 @@
                     .IsRequired();
             });
             userBuilder.Navigation(user => user.Password).IsRequired();
+
+            userBuilder
+                .Property(user => user.Role)
+                .HasColumnName("role")
+                .HasConversion<string>()
+                .HasMaxLength(9)
+                .HasDefaultValue(UserRole.User);
         }
     }
 }
