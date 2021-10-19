@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Net.Mime;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -10,7 +11,7 @@
     [Produces(MediaTypeNames.Application.Json)]
     public abstract class ApiControllerBase : ControllerBase
     {
-        public string AccessToken
+        protected string AccessToken
         {
             get
             {
@@ -29,5 +30,8 @@
                 return authorizationHeader.Replace("Bearer ", string.Empty);
             }
         }
+
+        protected IActionResult InternalServerError() =>
+            StatusCode(StatusCodes.Status500InternalServerError);
     }
 }

@@ -5,14 +5,14 @@
 
     public record CurrentUserInfoDto(Guid Id, string Username, string Role)
     {
-        public static CurrentUserInfoDto FromUserInfoResponse(UserInfoResponse userInfoResponse) =>
-            new(userInfoResponse.Id, userInfoResponse.Username, userInfoResponse.Role.ToString());
+        public static CurrentUserInfoDto FromUserInfoResult(UserInfoResult userInfoResult) =>
+            new(userInfoResult.Id, userInfoResult.Username, userInfoResult.Role.ToString());
     }
     
     public record TokenPairDto(string AccessToken, string RefreshToken)
     {
-        public static TokenPairDto FromTokenPairResponse(TokenPairResponse tokenPairResponse) =>
-            new(tokenPairResponse.AccessToken, tokenPairResponse.RefreshToken);
+        public static TokenPairDto FromTokenPairResponse(TokenPairResult tokenPairResult) =>
+            new(tokenPairResult.AccessToken, tokenPairResult.RefreshToken);
     }
 
     public record RegisterNewUserDto(string Username, string Password)

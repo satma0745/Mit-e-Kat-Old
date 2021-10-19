@@ -3,11 +3,12 @@
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
+    using Mitekat.Core.Features.Shared.Responses;
     using Mitekat.Core.Helpers.PasswordHashing;
     using Mitekat.Core.Persistence.Entities;
     using Mitekat.Core.Persistence.UnitOfWork;
 
-    internal class RegisterNewUserHandler : IRequestHandler<RegisterNewUserRequest>
+    internal class RegisterNewUserHandler : IRequestHandler<RegisterNewUserRequest, Response<Unit>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHashingHelper _passwordHashingHelper;
@@ -18,7 +19,7 @@
             _passwordHashingHelper = passwordHashingHelper;
         }
         
-        public async Task<Unit> Handle(RegisterNewUserRequest request, CancellationToken cancellationToken)
+        public async Task<Response<Unit>> Handle(RegisterNewUserRequest request, CancellationToken cancellationToken)
         {
             var hashedPassword = _passwordHashingHelper.HashPassword(request.Password);
             var user = new UserEntity(request.Username, hashedPassword);
@@ -26,7 +27,7 @@
             _unitOfWork.Users.Add(user);
             await _unitOfWork.SaveChangesAsync();
             
-            return Unit.Value;
+            return Response<Unit>.Success(Unit.Value);
         }
     }
 }

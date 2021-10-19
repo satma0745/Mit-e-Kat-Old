@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Mitekat.Core.Features.Auth;
+    using Mitekat.Core.Features.Shared.Responses;
     using Mitekat.RestApi.DataTransferObjects;
 
     public class AuthController : ApiControllerBase
@@ -19,12 +20,16 @@
         public async Task<IActionResult> GetCurrentUserInfo()
         {
             var request = new GetTokenOwnerInfoRequest(AccessToken);
-            var ownerInfo = await _mediator.Send(request);
+            var response = await _mediator.Send(request);
             
-            return ownerInfo switch
+            return response switch
             {
-                null => Unauthorized(),
-                _ => Ok(CurrentUserInfoDto.FromUserInfoResponse(ownerInfo))
+                (true, var userInfo, _) => Ok(CurrentUserInfoDto.FromUserInfoResult(userInfo)),
+                (false, _, var error) => error switch
+                {
+                    Error.UnauthorizedError => Unauthorized(),
+                    _ => InternalServerError()
+                }
             };
         }
 
@@ -32,21 +37,30 @@
         public async Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserDto dto)
         {
             var request = dto.ToRegisterNewUserRequest();
-            await _mediator.Send(request);
+            var response = await _mediator.Send(request);
             
-            return Ok();
+            return response switch
+            {
+                (true, _, _) => Ok(),
+                (false, _, _) => InternalServerError()
+            };
         }
 
         [HttpPost("authenticate")]
         public async Task<IActionResult> AuthenticateUser([FromBody] AuthenticateUserDto dto)
         {
             var request = dto.ToAuthenticateUserRequest();
-            var tokenPair = await _mediator.Send(request);
+            var response = await _mediator.Send(request);
             
-            return tokenPair switch
+            return response switch
             {
-                null => BadRequest("Incorrect username or password."),
-                _ => Ok(TokenPairDto.FromTokenPairResponse(tokenPair))
+                (true, var tokenPair, _) => Ok(TokenPairDto.FromTokenPairResponse(tokenPair)),
+                (false, _, var error) => error switch
+                {
+                    Error.ConflictError => BadRequest("Incorrect username or password."),
+                    Error.NotFoundError => NotFound(),
+                    _ => InternalServerError()
+                }
             };
         }
 
@@ -54,12 +68,16 @@
         public async Task<IActionResult> RefreshTokenPair([FromBody] RefreshTokenPairDto dto)
         {
             var request = dto.ToRefreshTokenPairRequest();
-            var tokenPair = await _mediator.Send(request);
+            var response = await _mediator.Send(request);
 
-            return tokenPair switch
+            return response switch
             {
-                null => BadRequest(),
-                _ => Ok(TokenPairDto.FromTokenPairResponse(tokenPair))
+                (true, var tokenPair, _) => Ok(TokenPairDto.FromTokenPairResponse(tokenPair)),
+                (false, _, var error) => error switch
+                {
+                    Error.ConflictError => BadRequest(),
+                    _ => InternalServerError()
+                }
             };
         }
     }
