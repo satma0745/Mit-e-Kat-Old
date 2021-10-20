@@ -11,7 +11,7 @@
     
     public record TokenPairDto(string AccessToken, string RefreshToken)
     {
-        public static TokenPairDto FromTokenPairResponse(TokenPairResult tokenPairResult) =>
+        public static TokenPairDto FromTokenPairResult(TokenPairResult tokenPairResult) =>
             new(tokenPairResult.AccessToken, tokenPairResult.RefreshToken);
     }
 
