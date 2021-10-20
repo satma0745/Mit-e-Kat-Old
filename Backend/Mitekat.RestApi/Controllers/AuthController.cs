@@ -41,8 +41,8 @@
             
             return response switch
             {
-                (true, _, _) => Ok(),
-                (false, _, _) => InternalServerError()
+                (true, _) => Ok(),
+                _ => InternalServerError()
             };
         }
 

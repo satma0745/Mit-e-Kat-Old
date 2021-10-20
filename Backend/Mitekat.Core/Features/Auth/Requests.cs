@@ -9,5 +9,5 @@
     
     public record RefreshTokenPairRequest(string RefreshToken) : IRequest<Response<TokenPairResult>>;
 
-    public record RegisterNewUserRequest(string Username, string Password) : IRequest<Response<Unit>>;
+    public record RegisterNewUserRequest(string Username, string Password) : IRequest<Response>;
 }
