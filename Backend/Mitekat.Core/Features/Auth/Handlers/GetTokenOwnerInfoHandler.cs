@@ -1,13 +1,12 @@
 ﻿namespace Mitekat.Core.Features.Auth.Handlers
 {
-    using System.Threading;
     using System.Threading.Tasks;
-    using MediatR;
+    using Mitekat.Core.Features.Shared;
     using Mitekat.Core.Features.Shared.Responses;
     using Mitekat.Core.Helpers.AuthToken;
     using Mitekat.Core.Persistence.UnitOfWork;
 
-    internal class GetTokenOwnerInfoHandler : IRequestHandler<GetTokenOwnerInfoRequest, Response<UserInfoResult>>
+    internal class GetTokenOwnerInfoHandler : RequestHandlerBase<GetTokenOwnerInfoRequest, UserInfoResult>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthTokenHelper _authTokenHelper;
@@ -18,18 +17,16 @@
             _authTokenHelper = authTokenHelper;
         }
         
-        public async Task<Response<UserInfoResult>> Handle(GetTokenOwnerInfoRequest request, CancellationToken _)
+        protected override async Task<Response<UserInfoResult>> HandleAsync(GetTokenOwnerInfoRequest request)
         {
             var accessTokenInfo = _authTokenHelper.ParseAccessToken(request.AccessToken);
             if (accessTokenInfo is null)
             {
-                return Response<UserInfoResult>.Failure(Error.Unauthorized);
+                return Failure(Error.Unauthorized);
             }
             
             var tokenOwner = await _unitOfWork.Users.FindAsync(accessTokenInfo.OwnerId);
-
-            var result = UserInfoResult.FromUserEntity(tokenOwner);
-            return Response<UserInfoResult>.Success(result);
+            return Success(UserInfoResult.FromUserEntity(tokenOwner));
         }
     }
 }

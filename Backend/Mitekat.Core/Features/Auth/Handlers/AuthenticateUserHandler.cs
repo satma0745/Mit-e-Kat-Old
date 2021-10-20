@@ -1,15 +1,14 @@
 ﻿namespace Mitekat.Core.Features.Auth.Handlers
 {
-    using System.Threading;
     using System.Threading.Tasks;
-    using MediatR;
+    using Mitekat.Core.Features.Shared;
     using Mitekat.Core.Features.Shared.Responses;
     using Mitekat.Core.Helpers.AuthToken;
     using Mitekat.Core.Helpers.PasswordHashing;
     using Mitekat.Core.Persistence.Entities;
     using Mitekat.Core.Persistence.UnitOfWork;
 
-    internal class AuthenticateUserHandler : IRequestHandler<AuthenticateUserRequest, Response<TokenPairResult>>
+    internal class AuthenticateUserHandler : RequestHandlerBase<AuthenticateUserRequest, TokenPairResult>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthTokenHelper _authTokenHelper;
@@ -25,19 +24,19 @@
             _passwordHashingHelper = passwordHashingHelper;
         }
         
-        public async Task<Response<TokenPairResult>> Handle(AuthenticateUserRequest request, CancellationToken _)
+        protected override async Task<Response<TokenPairResult>> HandleAsync(AuthenticateUserRequest request)
         {
             var user = await _unitOfWork.Users.FindAsync(request.Username);
             if (user is null)
             {
                 // user with specified username was not found
-                return Response<TokenPairResult>.Failure(Error.NotFound);
+                return Failure(Error.NotFound);
             }
 
             if (!_passwordHashingHelper.AreEqual(user.Password, request.Password))
             {
                 // incorrect password provided
-                return Response<TokenPairResult>.Failure(Error.Conflict);
+                return Failure(Error.Conflict);
             }
             
             var tokenPairInfo = _authTokenHelper.IssueTokenPair(user.Id, user.Role);
@@ -47,8 +46,7 @@
             _unitOfWork.RefreshTokens.Add(refreshToken);
             await _unitOfWork.SaveChangesAsync();
             
-            var result = TokenPairResult.FromTokenPairInfo(tokenPairInfo);
-            return Response<TokenPairResult>.Success(result);
+            return Success(TokenPairResult.FromTokenPairInfo(tokenPairInfo));
         }
     }
 }
