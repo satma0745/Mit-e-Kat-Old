@@ -4,6 +4,7 @@
 
 1. [Architectural notes](#Architectural-notes)
 2. [How to run](#How-to-run)
+3. [Todo](#Todo)
 
 ## Architectural notes
 
@@ -53,6 +54,23 @@ The above concepts are implemented as follows:
 
 Illustration:
 ![Project Diagram](github/Project%20Diagram.jpg)
+
+### Todo
+
+1. [x] AccessToken + RefreshToken JWT auth
+2. [x] OpenAPI spec + SwaggerUI
+3. [x] MediatR handlers
+4. [x] Utils for Failure and Success
+5. [x] Request execution pipeline
+6. [x] Utility for current user info retrieval
+7. [ ] Mapping
+8. [ ] Request validation
+9. [ ] Configuration validation
+10. [ ] Infrastructure for tests
+11. [ ] Token versioning
+12. [ ] Api versioning
+13. [ ] Automatic error handling
+14. [ ] Logging
 
 ## How to run
 
