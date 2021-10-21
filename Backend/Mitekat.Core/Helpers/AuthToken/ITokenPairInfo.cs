@@ -1,7 +1,6 @@
 ﻿namespace Mitekat.Core.Helpers.AuthToken
 {
     using System;
-    using Mitekat.Core.Persistence.Entities;
 
     public interface ITokenPairInfo
     {
@@ -11,8 +10,6 @@
 
     public interface IAccessTokenInfo
     {
-        Guid OwnerId { get; }
-        UserRole OwnerRole { get; }
         string EncodedToken { get; }
     }
 

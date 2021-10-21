@@ -1,4 +1,4 @@
-﻿namespace Mitekat.Core.Features.Shared
+﻿namespace Mitekat.Core.Features.Shared.Handlers
 {
     using System.Threading;
     using System.Threading.Tasks;

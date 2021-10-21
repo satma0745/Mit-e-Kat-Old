@@ -1,9 +1,13 @@
 ﻿namespace Mitekat.RestApi.Controllers
 {
+    using System;
     using System.Linq;
     using System.Net.Mime;
+    using System.Security.Claims;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Mitekat.Core.Features.Shared.Requests;
+    using Mitekat.Core.Persistence.Entities;
 
     [ApiController]
     [Route("/api/[controller]")]
@@ -11,27 +15,23 @@
     [Produces(MediaTypeNames.Application.Json)]
     public abstract class ApiControllerBase : ControllerBase
     {
-        protected string AccessToken
+        protected IRequester Requester
         {
             get
             {
-                var authorizationHeaderStringValues = Request.Headers["Authorization"];
-                if (authorizationHeaderStringValues.Count != 1)
-                {
-                    return null;
-                }
+                var idClaim = User.Claims.Single(claim => claim.Type == ClaimTypes.NameIdentifier);
+                var requesterId = Guid.Parse(idClaim.Value);
 
-                var authorizationHeader = authorizationHeaderStringValues.Single();
-                if (!authorizationHeader.StartsWith("Bearer "))
-                {
-                    return null;
-                }
+                var roleClaim = User.Claims.Single(claim => claim.Type == ClaimTypes.Role);
+                var requesterRole = Enum.Parse<UserRole>(roleClaim.Value);
 
-                return authorizationHeader.Replace("Bearer ", string.Empty);
+                return new RequesterInfo(requesterId, requesterRole);
             }
         }
 
         protected IActionResult InternalServerError() =>
             StatusCode(StatusCodes.Status500InternalServerError);
+
+        private record RequesterInfo(Guid Id, UserRole Role) : IRequester;
     }
 }

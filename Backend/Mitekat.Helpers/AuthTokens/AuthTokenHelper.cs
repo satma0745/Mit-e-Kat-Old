@@ -26,27 +26,6 @@
         public AuthTokenHelper(IOptions<AuthConfiguration> authConfigurationOptions) =>
             _authConfiguration = authConfigurationOptions.Value;
 
-        public IAccessTokenInfo ParseAccessToken(string accessToken)
-        {
-            try
-            {
-                var payload = Token.Decode<IDictionary<string, object>>(accessToken);
-                var ownerId = Guid.Parse((string) payload["sub"]);
-                var ownerRole = (UserRole) Enum.Parse(typeof(UserRole), (string) payload["role"]);
-
-                return new AccessTokenInfo
-                {
-                    OwnerId = ownerId,
-                    OwnerRole = ownerRole,
-                    EncodedToken = accessToken
-                };
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
         public IRefreshTokenInfo ParseRefreshToken(string refreshToken)
         {
             try
@@ -89,12 +68,7 @@
                 .WithLifetime(AccessTokenLifetime)
                 .Encode();
 
-            return new AccessTokenInfo
-            {
-                OwnerId = ownerId,
-                OwnerRole = ownerRole,
-                EncodedToken = encodedAccessToken
-            };
+            return new AccessTokenInfo(encodedAccessToken);
         }
 
         private RefreshTokenInfo IssueRefreshToken(Guid ownerId)

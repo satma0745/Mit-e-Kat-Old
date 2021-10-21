@@ -6,7 +6,6 @@
     public interface IAuthTokenHelper
     {
         ITokenPairInfo IssueTokenPair(Guid ownerId, UserRole ownerRole);
-        IAccessTokenInfo ParseAccessToken(string accessToken);
         IRefreshTokenInfo ParseRefreshToken(string refreshToken);
     }
 }

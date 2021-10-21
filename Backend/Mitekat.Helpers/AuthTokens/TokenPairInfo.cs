@@ -2,7 +2,6 @@
 {
     using System;
     using Mitekat.Core.Helpers.AuthToken;
-    using Mitekat.Core.Persistence.Entities;
 
     internal class TokenPairInfo : ITokenPairInfo
     {
@@ -10,12 +9,7 @@
         public IRefreshTokenInfo RefreshToken { get; init; }
     }
 
-    internal class AccessTokenInfo : IAccessTokenInfo
-    {
-        public Guid OwnerId { get; init; }
-        public UserRole OwnerRole { get; init; }
-        public string EncodedToken { get; init; }
-    }
+    internal record AccessTokenInfo(string EncodedToken) : IAccessTokenInfo;
 
     internal class RefreshTokenInfo : IRefreshTokenInfo
     {

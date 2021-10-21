@@ -1,13 +1,12 @@
 ﻿namespace Mitekat.Core.Features.Auth
 {
-    using MediatR;
-    using Mitekat.Core.Features.Shared.Responses;
+    using Mitekat.Core.Features.Shared.Requests;
 
-    public record AuthenticateUserRequest(string Username, string Password) : IRequest<Response<TokenPairResult>>;
+    public record AuthenticateUserRequest(string Username, string Password) : RequestBase<TokenPairResult>;
     
-    public record GetTokenOwnerInfoRequest(string AccessToken) : IRequest<Response<UserInfoResult>>;
+    public record GetTokenOwnerInfoRequest(IRequester Requester) : RequestBase<UserInfoResult>;
     
-    public record RefreshTokenPairRequest(string RefreshToken) : IRequest<Response<TokenPairResult>>;
+    public record RefreshTokenPairRequest(string RefreshToken) : RequestBase<TokenPairResult>;
 
-    public record RegisterNewUserRequest(string Username, string Password) : IRequest<Response>;
+    public record RegisterNewUserRequest(string Username, string Password) : RequestBase;
 }

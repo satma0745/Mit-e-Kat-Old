@@ -20,7 +20,7 @@
         [HttpGet("who-am-i")]
         public Task<IActionResult> GetCurrentUserInfo() =>
             _mediator
-                .Send(new GetTokenOwnerInfoRequest(AccessToken))
+                .Send(new GetTokenOwnerInfoRequest(Requester))
                 .ToActionResult(
                     userInfo => Ok(CurrentUserInfoDto.FromUserInfoResult(userInfo)),
                     error => error switch
