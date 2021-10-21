@@ -1,5 +1,6 @@
 ﻿namespace Mitekat.RestApi.Controllers
 {
+    using System;
     using System.Threading.Tasks;
     using MediatR;
     using Microsoft.AspNetCore.Authorization;
@@ -23,17 +24,27 @@
                 .Send(new GetTokenOwnerInfoRequest(Requester))
                 .ToActionResult(
                     userInfo => Ok(CurrentUserInfoDto.FromUserInfoResult(userInfo)),
-                    error => error switch
-                    {
-                        Error.UnauthorizedError => Unauthorized(),
-                        _ => InternalServerError()
-                    });
+                    _ => InternalServerError());
 
         [HttpPost("register")]
         public Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserDto dto) =>
             _mediator
                 .Send(dto.ToRegisterNewUserRequest())
                 .ToActionResult(Ok, _ => InternalServerError());
+
+        [Authorize]
+        [HttpPost("{userId:guid}/update")]
+        public Task<IActionResult> UpdateUser([FromRoute] Guid userId, [FromBody] UpdateUserDto dto) =>
+            _mediator
+                .Send(dto.ToUpdateUserRequest(userId, Requester))
+                .ToActionResult(
+                    Ok,
+                    error => error switch
+                    {
+                        Error.AccessViolationError => Forbid(),
+                        Error.NotFoundError => NotFound(),
+                        _ => InternalServerError()
+                    });
 
         [HttpPost("authenticate")]
         public Task<IActionResult> AuthenticateUser([FromBody] AuthenticateUserDto dto) =>

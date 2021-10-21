@@ -4,10 +4,10 @@
 
     public class UserEntity
     {
-        public readonly Guid Id;
-        public readonly string Username;
-        public readonly UserPassword Password;
-        public readonly UserRole Role;
+        public Guid Id { get; }
+        public string Username { get; private set; }
+        public UserPassword Password { get; private set; }
+        public UserRole Role { get; }
 
         // For EF Core
         private UserEntity()
@@ -20,6 +20,12 @@
             Username = username;
             Password = password;
             Role = role;
+        }
+
+        public void Patch(string username, UserPassword password)
+        {
+            Username = username;
+            Password = password;
         }
     }
     

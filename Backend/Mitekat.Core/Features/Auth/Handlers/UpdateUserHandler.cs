@@ -1,0 +1,42 @@
+﻿namespace Mitekat.Core.Features.Auth.Handlers
+{
+    using System.Threading.Tasks;
+    using Mitekat.Core.Features.Shared.Handlers;
+    using Mitekat.Core.Features.Shared.Responses;
+    using Mitekat.Core.Helpers.PasswordHashing;
+    using Mitekat.Core.Persistence.Entities;
+    using Mitekat.Core.Persistence.UnitOfWork;
+
+    internal class UpdateUserHandler : RequestHandlerBase<UpdateUserRequest>
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPasswordHashingHelper _passwordHashingHelper;
+
+        public UpdateUserHandler(IUnitOfWork unitOfWork, IPasswordHashingHelper passwordHashingHelper)
+        {
+            _unitOfWork = unitOfWork;
+            _passwordHashingHelper = passwordHashingHelper;
+        }
+
+        protected override async Task<Response> HandleAsync(UpdateUserRequest request)
+        {
+            if (request.Requester.Role == UserRole.User && request.Id != request.Requester.Id)
+            {
+                return Failure(Error.AccessViolation);
+            }
+
+            var user = await _unitOfWork.Users.FindAsync(request.Id);
+            if (user is null)
+            {
+                return Failure(Error.NotFound);
+            }
+
+            var newPassword = _passwordHashingHelper.HashPassword(request.Password);
+            user.Patch(request.Username, newPassword);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return Success();
+        }
+    }
+}

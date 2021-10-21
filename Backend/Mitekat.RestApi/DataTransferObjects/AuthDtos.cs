@@ -2,6 +2,7 @@
 {
     using System;
     using Mitekat.Core.Features.Auth;
+    using Mitekat.Core.Features.Shared.Requests;
 
     public record CurrentUserInfoDto(Guid Id, string Username, string Role)
     {
@@ -19,6 +20,12 @@
     {
         public RegisterNewUserRequest ToRegisterNewUserRequest() =>
             new(Username, Password);
+    }
+
+    public record UpdateUserDto(string Username, string Password)
+    {
+        public UpdateUserRequest ToUpdateUserRequest(Guid userId, IRequester requester) =>
+            new(userId, Username, Password, requester);
     }
 
     public record AuthenticateUserDto(string Username, string Password)

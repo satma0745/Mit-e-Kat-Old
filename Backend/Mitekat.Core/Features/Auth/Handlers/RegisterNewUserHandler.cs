@@ -1,7 +1,6 @@
 ﻿namespace Mitekat.Core.Features.Auth.Handlers
 {
     using System.Threading.Tasks;
-    using Mitekat.Core.Features.Shared;
     using Mitekat.Core.Features.Shared.Handlers;
     using Mitekat.Core.Features.Shared.Responses;
     using Mitekat.Core.Helpers.PasswordHashing;
