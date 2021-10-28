@@ -6,6 +6,7 @@
         public static readonly UnauthorizedError Unauthorized = new();
         public static readonly AccessViolationError AccessViolation = new();
         public static readonly ConflictError Conflict = new();
+        public static readonly UnhandledError Unhandled = new();
         
         private Error()
         {
@@ -24,6 +25,10 @@
         }
 
         public sealed class ConflictError : Error
+        {
+        }
+
+        public sealed class UnhandledError : Error
         {
         }
     }

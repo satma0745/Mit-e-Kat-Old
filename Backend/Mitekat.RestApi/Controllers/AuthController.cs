@@ -22,15 +22,13 @@
         public Task<IActionResult> GetCurrentUserInfo() =>
             _mediator
                 .Send(new GetTokenOwnerInfoRequest(Requester))
-                .ToActionResult(
-                    userInfo => Ok(CurrentUserInfoDto.FromUserInfoResult(userInfo)),
-                    _ => InternalServerError());
+                .ToActionResult(userInfo => Ok(CurrentUserInfoDto.FromUserInfoResult(userInfo)));
 
         [HttpPost("register")]
         public Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserDto dto) =>
             _mediator
                 .Send(dto.ToRegisterNewUserRequest())
-                .ToActionResult(_ => Ok(), _ => InternalServerError());
+                .ToActionResult();
 
         [Authorize]
         [HttpPost("{userId:guid}/update")]

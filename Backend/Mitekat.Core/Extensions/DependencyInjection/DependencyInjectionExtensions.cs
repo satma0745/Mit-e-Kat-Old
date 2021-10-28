@@ -10,6 +10,7 @@
         public static IServiceCollection AddCore(this IServiceCollection services) =>
             services
                 .AddMediatR(Assembly.GetExecutingAssembly())
-                .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(ErrorHandlingPipelineBehavior<,>));
     }
 }

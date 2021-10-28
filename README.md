@@ -69,7 +69,7 @@ Illustration:
 10. [ ] Infrastructure for tests
 11. [ ] Token versioning
 12. [ ] Api versioning
-13. [ ] Automatic error handling
+13. [x] Automatic error handling
 14. [x] Logging
 
 ## How to run

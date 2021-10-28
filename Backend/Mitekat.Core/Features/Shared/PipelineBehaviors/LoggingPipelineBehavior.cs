@@ -1,34 +1,32 @@
 ﻿namespace Mitekat.Core.Features.Shared.PipelineBehaviors
 {
-    using System;
     using System.Diagnostics;
-    using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
     using Microsoft.Extensions.Logging;
+    using Mitekat.Core.Features.Shared.Responses;
 
-    internal class LoggingPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    internal class LoggingPipelineBehavior<TAnyRequest, TResponse> : PipelineBehaviorBase<TAnyRequest, TResponse>
     {
-        private readonly ILogger<LoggingPipelineBehavior<TRequest, TResponse>> _logger;
+        private readonly ILogger<LoggingPipelineBehavior<TAnyRequest, TResponse>> _logger;
 
-        public LoggingPipelineBehavior(ILogger<LoggingPipelineBehavior<TRequest, TResponse>> logger) =>
+        public LoggingPipelineBehavior(ILogger<LoggingPipelineBehavior<TAnyRequest, TResponse>> logger) =>
             _logger = logger;
 
-        public async Task<TResponse> Handle(
+        protected override async Task<Response<TResult>> HandleAsync<TRequest, TResult>(
             TRequest request,
-            CancellationToken _,
-            RequestHandlerDelegate<TResponse> next)
+            RequestHandlerDelegate<Response<TResult>> next)
         {
-            var requestId = Guid.NewGuid();
-            
-            _logger.LogInformation("Handling request #{Id} of type {Type}", requestId, request.GetType().Name);
-            _logger.LogInformation("Request #{Id} payload: {@Payload}", requestId, request);
+            _logger.LogInformation("Handling request #{RequestId}", request.RequestId);
+            _logger.LogInformation("Request #{RequestId}: {@RequestPayload}", request.RequestId, request);
 
             var stopwatch = Stopwatch.StartNew();
             var response = await next();
             stopwatch.Stop();
             
-            _logger.LogInformation("Request #{Id} handled in {Time}ms", requestId, stopwatch.ElapsedMilliseconds);
+            _logger.LogInformation(
+                message: "Request #{RequestId} handled in {ElapsedTime}ms",
+                args: new object[] { request.RequestId, stopwatch.ElapsedMilliseconds });
             
             return response;
         }
