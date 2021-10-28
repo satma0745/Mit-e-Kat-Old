@@ -7,5 +7,5 @@
     public abstract record RequestBase<TResult> : IRequest<Response<TResult>>;
     
     // Request for response without result payload
-    public abstract record RequestBase : IRequest<Response>;
+    public abstract record RequestBase : RequestBase<BlankResult>;
 }

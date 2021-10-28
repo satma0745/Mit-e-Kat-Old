@@ -30,7 +30,7 @@
         public Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserDto dto) =>
             _mediator
                 .Send(dto.ToRegisterNewUserRequest())
-                .ToActionResult(Ok, _ => InternalServerError());
+                .ToActionResult(_ => Ok(), _ => InternalServerError());
 
         [Authorize]
         [HttpPost("{userId:guid}/update")]
@@ -38,7 +38,7 @@
             _mediator
                 .Send(dto.ToUpdateUserRequest(userId, Requester))
                 .ToActionResult(
-                    Ok,
+                    _ => Ok(),
                     error => error switch
                     {
                         Error.AccessViolationError => Forbid(),

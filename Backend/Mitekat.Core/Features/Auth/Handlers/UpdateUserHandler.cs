@@ -7,7 +7,7 @@
     using Mitekat.Core.Persistence.Entities;
     using Mitekat.Core.Persistence.UnitOfWork;
 
-    internal class UpdateUserHandler : RequestHandlerBase<UpdateUserRequest>
+    internal class UpdateUserHandler : RequestHandlerBase<UpdateUserRequest, BlankResult>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHashingHelper _passwordHashingHelper;
@@ -18,7 +18,7 @@
             _passwordHashingHelper = passwordHashingHelper;
         }
 
-        protected override async Task<Response> HandleAsync(UpdateUserRequest request)
+        protected override async Task<Response<BlankResult>> HandleAsync(UpdateUserRequest request)
         {
             if (request.Requester.Role == UserRole.User && request.Id != request.Requester.Id)
             {

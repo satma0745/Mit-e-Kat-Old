@@ -7,7 +7,7 @@
     using Mitekat.Core.Persistence.Entities;
     using Mitekat.Core.Persistence.UnitOfWork;
 
-    internal class RegisterNewUserHandler : RequestHandlerBase<RegisterNewUserRequest>
+    internal class RegisterNewUserHandler : RequestHandlerBase<RegisterNewUserRequest, BlankResult>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHashingHelper _passwordHashingHelper;
@@ -18,7 +18,7 @@
             _passwordHashingHelper = passwordHashingHelper;
         }
         
-        protected override async Task<Response> HandleAsync(RegisterNewUserRequest request)
+        protected override async Task<Response<BlankResult>> HandleAsync(RegisterNewUserRequest request)
         {
             var hashedPassword = _passwordHashingHelper.HashPassword(request.Password);
             var user = new UserEntity(request.Username, hashedPassword);
