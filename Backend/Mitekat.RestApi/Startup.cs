@@ -9,6 +9,7 @@ namespace Mitekat.RestApi
     using Mitekat.Helpers.Extensions.DependencyInjection;
     using Mitekat.Persistence.Extensions.DependencyInjection;
     using Mitekat.RestApi.Extensions;
+    using Serilog;
 
     internal class Startup
     {
@@ -34,6 +35,7 @@ namespace Mitekat.RestApi
             }
 
             application
+                .UseSerilogRequestLogging()
                 .UseRouting()
                 .UseAuthentication()
                 .UseAuthorization()

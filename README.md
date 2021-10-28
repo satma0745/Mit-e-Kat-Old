@@ -70,7 +70,7 @@ Illustration:
 11. [ ] Token versioning
 12. [ ] Api versioning
 13. [ ] Automatic error handling
-14. [ ] Logging
+14. [x] Logging
 
 ## How to run
 
