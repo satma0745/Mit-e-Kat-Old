@@ -1,14 +1,14 @@
-﻿namespace Mitekat.RestApi.Controllers
+﻿namespace Mitekat.RestApi.Features.Auth
 {
     using System;
     using System.Threading.Tasks;
     using MediatR;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Mitekat.Core.Features.Auth;
+    using Mitekat.Core.Features.Auth.GetTokenOwnerInfo;
     using Mitekat.Core.Features.Shared.Responses;
-    using Mitekat.RestApi.DataTransferObjects;
     using Mitekat.RestApi.Extensions;
+    using Mitekat.RestApi.Features.Shared;
 
     public class AuthController : ApiControllerBase
     {
@@ -19,22 +19,22 @@
         
         [Authorize]
         [HttpGet("who-am-i")]
-        public Task<IActionResult> GetCurrentUserInfo() =>
+        public Task<IActionResult> GetTokenOwnerInfo() =>
             _mediator
                 .Send(new GetTokenOwnerInfoRequest(Requester))
-                .ToActionResult(userInfo => Ok(CurrentUserInfoDto.FromUserInfoResult(userInfo)));
+                .ToActionResult(result => Ok(GetTokenOwnerInfoResultDto.FromResult(result)));
 
         [HttpPost("register")]
-        public Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserDto dto) =>
+        public Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserRequestDto dto) =>
             _mediator
-                .Send(dto.ToRegisterNewUserRequest())
+                .Send(dto.ToRequest())
                 .ToActionResult();
 
         [Authorize]
         [HttpPost("{userId:guid}/update")]
-        public Task<IActionResult> UpdateUser([FromRoute] Guid userId, [FromBody] UpdateUserDto dto) =>
+        public Task<IActionResult> UpdateUser([FromRoute] Guid userId, [FromBody] UpdateUserRequestDto dto) =>
             _mediator
-                .Send(dto.ToUpdateUserRequest(userId, Requester))
+                .Send(dto.ToRequest(userId, Requester))
                 .ToActionResult(
                     _ => Ok(),
                     error => error switch
@@ -45,11 +45,11 @@
                     });
 
         [HttpPost("authenticate")]
-        public Task<IActionResult> AuthenticateUser([FromBody] AuthenticateUserDto dto) =>
+        public Task<IActionResult> AuthenticateUser([FromBody] AuthenticateUserRequestDto dto) =>
             _mediator
-                .Send(dto.ToAuthenticateUserRequest())
+                .Send(dto.ToRequest())
                 .ToActionResult(
-                    tokenPair => Ok(TokenPairDto.FromTokenPairResult(tokenPair)),
+                    result => Ok(AuthenticateUserResultDto.FromResult(result)),
                     error => error switch
                     {
                         Error.ConflictError => BadRequest("Incorrect username or password."),
@@ -58,11 +58,11 @@
                     });
 
         [HttpPost("refresh")]
-        public Task<IActionResult> RefreshTokenPair([FromBody] RefreshTokenPairDto dto) =>
+        public Task<IActionResult> RefreshTokenPair([FromBody] RefreshTokenRequestDto dto) =>
             _mediator
-                .Send(dto.ToRefreshTokenPairRequest())
+                .Send(dto.ToRequest())
                 .ToActionResult(
-                    tokenPair => Ok(TokenPairDto.FromTokenPairResult(tokenPair)),
+                    result => Ok(RefreshTokenPairResultDto.FromResult(result)),
                     error => error switch
                     {
                         Error.ConflictError => BadRequest(),

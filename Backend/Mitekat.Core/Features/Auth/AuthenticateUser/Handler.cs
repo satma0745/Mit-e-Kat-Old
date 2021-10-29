@@ -1,4 +1,4 @@
-﻿namespace Mitekat.Core.Features.Auth.Handlers
+﻿namespace Mitekat.Core.Features.Auth.AuthenticateUser
 {
     using System.Threading.Tasks;
     using Mitekat.Core.Features.Shared.Handlers;
@@ -8,7 +8,7 @@
     using Mitekat.Core.Persistence.Entities;
     using Mitekat.Core.Persistence.UnitOfWork;
 
-    internal class AuthenticateUserHandler : RequestHandlerBase<AuthenticateUserRequest, TokenPairResult>
+    internal class AuthenticateUserHandler : RequestHandlerBase<AuthenticateUserRequest, AuthenticateUserResult>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthTokenHelper _authTokenHelper;
@@ -24,7 +24,7 @@
             _passwordHashingHelper = passwordHashingHelper;
         }
         
-        protected override async Task<Response<TokenPairResult>> HandleAsync(AuthenticateUserRequest request)
+        protected override async Task<Response<AuthenticateUserResult>> HandleAsync(AuthenticateUserRequest request)
         {
             var user = await _unitOfWork.Users.FindAsync(request.Username);
             if (user is null)
@@ -46,7 +46,7 @@
             _unitOfWork.RefreshTokens.Add(refreshToken);
             await _unitOfWork.SaveChangesAsync();
             
-            return Success(TokenPairResult.FromTokenPairInfo(tokenPairInfo));
+            return Success(AuthenticateUserResult.FromTokenPairInfo(tokenPairInfo));
         }
     }
 }

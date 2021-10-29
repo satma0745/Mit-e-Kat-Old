@@ -1,4 +1,4 @@
-﻿namespace Mitekat.RestApi.Controllers
+﻿namespace Mitekat.RestApi.Features.Shared
 {
     using System;
     using System.Linq;

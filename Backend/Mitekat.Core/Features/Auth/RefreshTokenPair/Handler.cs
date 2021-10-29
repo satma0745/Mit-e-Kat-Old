@@ -1,4 +1,4 @@
-﻿namespace Mitekat.Core.Features.Auth.Handlers
+﻿namespace Mitekat.Core.Features.Auth.RefreshTokenPair
 {
     using System.Threading.Tasks;
     using Mitekat.Core.Features.Shared.Handlers;
@@ -7,7 +7,7 @@
     using Mitekat.Core.Persistence.Entities;
     using Mitekat.Core.Persistence.UnitOfWork;
 
-    internal class RefreshTokenPairHandler : RequestHandlerBase<RefreshTokenPairRequest, TokenPairResult>
+    internal class RefreshTokenPairHandler : RequestHandlerBase<RefreshTokenPairRequest, RefreshTokenPairResult>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthTokenHelper _authTokenHelper;
@@ -18,7 +18,7 @@
             _authTokenHelper = authTokenHelper;
         }
         
-        protected override async Task<Response<TokenPairResult>> HandleAsync(RefreshTokenPairRequest request)
+        protected override async Task<Response<RefreshTokenPairResult>> HandleAsync(RefreshTokenPairRequest request)
         {
             var oldRefreshTokenInfo = _authTokenHelper.ParseRefreshToken(request.RefreshToken);
             if (oldRefreshTokenInfo is null)
@@ -48,7 +48,7 @@
             _unitOfWork.RefreshTokens.Replace(oldRefreshToken, newRefreshToken);
             await _unitOfWork.SaveChangesAsync();
 
-            return Success(TokenPairResult.FromTokenPairInfo(newTokenPairInfo));
+            return Success(RefreshTokenPairResult.FromTokenPairInfo(newTokenPairInfo));
         }
     }
 }

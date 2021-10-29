@@ -1,4 +1,4 @@
-﻿namespace Mitekat.Core.Features.Auth.Handlers
+﻿namespace Mitekat.Core.Features.Auth.UpdateUser
 {
     using System.Threading.Tasks;
     using Mitekat.Core.Features.Shared.Handlers;
