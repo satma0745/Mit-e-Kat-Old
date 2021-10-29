@@ -10,6 +10,7 @@
         public UserRole Role { get; }
 
         // For EF Core
+        // ReSharper disable once UnusedMember.Local
         private UserEntity()
         {
         }
@@ -35,6 +36,7 @@
         public readonly string Salt;
         
         // For EF Core
+        // ReSharper disable once UnusedMember.Local
         private UserPassword()
         {
         }

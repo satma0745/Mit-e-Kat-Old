@@ -8,6 +8,7 @@
         public readonly DateTime ExpirationTime;
 
         // For EF Core
+        // ReSharper disable once UnusedMember.Local
         private RefreshTokenEntity()
         {
         }

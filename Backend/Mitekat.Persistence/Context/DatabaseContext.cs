@@ -7,7 +7,9 @@
     internal class DatabaseContext : DbContext
     {
         // Private setters are required by EF Core
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public DbSet<UserEntity> Users { get; private set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public DbSet<RefreshTokenEntity> RefreshTokens { get; private set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)

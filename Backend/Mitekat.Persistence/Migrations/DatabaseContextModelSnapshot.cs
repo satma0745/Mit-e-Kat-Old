@@ -74,14 +74,14 @@
                                 .HasMaxLength(60)
                                 .HasColumnType("character(60)")
                                 .HasColumnName("password_hash")
-                                .IsFixedLength(true);
+                                .IsFixedLength();
 
                             b1.Property<string>("Salt")
                                 .IsRequired()
                                 .HasMaxLength(29)
                                 .HasColumnType("character(29)")
                                 .HasColumnName("password_salt")
-                                .IsFixedLength(true);
+                                .IsFixedLength();
 
                             b1.HasKey("UserEntityId");
 
