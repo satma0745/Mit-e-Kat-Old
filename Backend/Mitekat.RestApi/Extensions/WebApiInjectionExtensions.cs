@@ -4,6 +4,7 @@
     using FluentValidation.AspNetCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Mitekat.RestApi.Filters;
 
     internal static class WebApiInjectionExtensions
     {
@@ -11,7 +12,8 @@
             services
                 .AddSwagger(configuration)
                 .AddAuthentication(configuration)
-                .AddControllers()
+                .AddControllers(options => options.Filters.Add<ValidationErrorResponseFilter>())
+                .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true)
                 .AddFluentValidation(options =>
                 {
                     options.DisableDataAnnotationsValidation = true;

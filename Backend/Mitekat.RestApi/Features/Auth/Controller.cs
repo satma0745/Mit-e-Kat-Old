@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using MediatR;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Mitekat.Core.Features.Auth.GetTokenOwnerInfo;
     using Mitekat.Core.Features.Shared.Responses;
@@ -46,6 +47,7 @@
                     });
 
         [HttpPost("authenticate")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public Task<IActionResult> AuthenticateUser([FromBody] AuthenticateUserRequestDto dto) =>
             _mediator
                 .Send(dto.ToRequest())
