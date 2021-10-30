@@ -2,7 +2,6 @@
 {
     using System.Text.Json.Serialization;
     using FluentValidation;
-    using Mitekat.Core.Features.Auth.RegisterNewUser;
 
     public class RegisterNewUserRequestDto
     {
@@ -13,9 +12,6 @@
         [JsonPropertyName("password")]
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Password { get; set; }
-        
-        public RegisterNewUserRequest ToRequest() =>
-            new(Username, Password);
     }
 
     internal class RegisterNewUserRequestDtoValidator : AbstractValidator<RegisterNewUserRequestDto>

@@ -5,13 +5,10 @@
 
     public class RegisterNewUserRequest : RequestBase<BlankResult>
     {
-        public string Username { get; }
-        public string Password { get; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public string Username { get; private set; }
 
-        public RegisterNewUserRequest(string username, string password)
-        {
-            Username = username;
-            Password = password;
-        }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public string Password { get; private set; }
     }
 }

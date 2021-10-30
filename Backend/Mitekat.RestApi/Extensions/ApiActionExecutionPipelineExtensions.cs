@@ -2,11 +2,12 @@
 {
     using System;
     using System.Threading.Tasks;
+    using MediatR;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Mitekat.Core.Features.Shared.Responses;
 
-    internal static class ResponseToActionResultExtensions
+    internal static class ApiActionExecutionPipelineExtensions
     {
         public static async Task<IActionResult> ToActionResult<TResult>(
             this Task<Response<TResult>> responseTask,
@@ -28,5 +29,8 @@
                 _ => new StatusCodeResult(StatusCodes.Status200OK),
                 _ => new StatusCodeResult(StatusCodes.Status500InternalServerError)
             );
+
+        public static Task<TResponse> Send<TResponse>(this IMediator mediator, Func<IRequest<TResponse>> makeRequest) =>
+            mediator.Send(makeRequest());
     }
 }

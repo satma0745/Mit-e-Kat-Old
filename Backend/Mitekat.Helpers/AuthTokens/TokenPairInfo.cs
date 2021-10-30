@@ -9,7 +9,10 @@
         public IRefreshTokenInfo RefreshToken { get; init; }
     }
 
-    internal record AccessTokenInfo(string EncodedToken) : IAccessTokenInfo;
+    internal class AccessTokenInfo : IAccessTokenInfo
+    {
+        public string EncodedToken { get; init; }
+    }
 
     internal class RefreshTokenInfo : IRefreshTokenInfo
     {

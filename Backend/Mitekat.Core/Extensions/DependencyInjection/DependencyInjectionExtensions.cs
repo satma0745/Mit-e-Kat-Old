@@ -14,6 +14,7 @@
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(ErrorHandlingPipelineBehavior<,>))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>))
-                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
+                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true)
+                .AddAutoMapper(Assembly.GetExecutingAssembly());
     }
 }

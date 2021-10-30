@@ -7,15 +7,18 @@
     public class UpdateUserRequest : RequestBase<BlankResult>
     {
         public Guid Id { get; }
-        public string Username { get; }
-        public string Password { get; }
+        
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public string Username { get; private set; }
+        
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public string Password { get; private set; }
+        
         public IRequester Requester { get; }
 
-        public UpdateUserRequest(Guid id, string username, string password, IRequester requester)
+        public UpdateUserRequest(Guid id, IRequester requester)
         {
             Id = id;
-            Username = username;
-            Password = password;
             Requester = requester;
         }
     }

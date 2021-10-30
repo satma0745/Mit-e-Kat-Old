@@ -12,6 +12,7 @@
             services
                 .AddSwagger(configuration)
                 .AddAuthentication(configuration)
+                .AddAutoMapper(Assembly.GetExecutingAssembly())
                 .AddControllers(options => options.Filters.Add<ValidationErrorResponseFilter>())
                 .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true)
                 .AddFluentValidation(options =>

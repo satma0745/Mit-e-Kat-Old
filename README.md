@@ -63,7 +63,7 @@ Illustration:
 4. [x] Utils for Failure and Success
 5. [x] Request execution pipeline
 6. [x] Utility for current user info retrieval
-7. [ ] Mapping
+7. [x] Mapping
 8. [x] Request validation
 9. [ ] Configuration validation
 10. [ ] Infrastructure for tests

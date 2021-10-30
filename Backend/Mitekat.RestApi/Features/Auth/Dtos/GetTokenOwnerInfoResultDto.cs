@@ -2,27 +2,19 @@
 {
     using System;
     using System.Text.Json.Serialization;
-    using Mitekat.Core.Features.Auth.GetTokenOwnerInfo;
 
     public class GetTokenOwnerInfoResultDto
     {
-        public static GetTokenOwnerInfoResultDto FromResult(GetTokenOwnerInfoResult result) =>
-            new(result.Id, result.Username, result.Role.ToString());
-        
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         [JsonPropertyName("id")]
-        public Guid Id { get; }
+        public Guid Id { get; private set; }
         
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         [JsonPropertyName("username")]
-        public string Username { get; }
+        public string Username { get; private set; }
         
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         [JsonPropertyName("role")]
-        public string Role { get; }
-
-        private GetTokenOwnerInfoResultDto(Guid id, string username, string role)
-        {
-            Id = id;
-            Username = username;
-            Role = role;
-        }
+        public string Role { get; private set; }
     }
 }

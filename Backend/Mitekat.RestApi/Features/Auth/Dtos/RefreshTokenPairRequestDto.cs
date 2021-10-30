@@ -2,19 +2,15 @@
 {
     using System.Text.Json.Serialization;
     using FluentValidation;
-    using Mitekat.Core.Features.Auth.RefreshTokenPair;
 
-    public class RefreshTokenRequestDto
+    public class RefreshTokenPairRequestDto
     {
         [JsonPropertyName("refreshToken")]
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string RefreshToken { get; set; }
-        
-        public RefreshTokenPairRequest ToRequest() =>
-            new(RefreshToken);
     }
     
-    internal class RefreshTokenRequestDtoValidator : AbstractValidator<RefreshTokenRequestDto>
+    internal class RefreshTokenRequestDtoValidator : AbstractValidator<RefreshTokenPairRequestDto>
     {
         public RefreshTokenRequestDtoValidator() =>
             RuleFor(dto => dto.RefreshToken).NotEmpty();

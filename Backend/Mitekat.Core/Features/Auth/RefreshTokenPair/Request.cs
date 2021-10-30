@@ -4,9 +4,7 @@
 
     public class RefreshTokenPairRequest : RequestBase<RefreshTokenPairResult>
     {
-        public string RefreshToken { get; }
-
-        public RefreshTokenPairRequest(string refreshToken) =>
-            RefreshToken = refreshToken;
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public string RefreshToken { get; private set; }
     }
 }

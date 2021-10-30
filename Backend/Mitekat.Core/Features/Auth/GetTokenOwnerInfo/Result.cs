@@ -5,18 +5,13 @@
 
     public class GetTokenOwnerInfoResult
     {
-        public static GetTokenOwnerInfoResult FromUserEntity(UserEntity user) =>
-            new(user.Id, user.Username, user.Role);
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public Guid Id { get; private set; }
         
-        public Guid Id { get; }
-        public string Username { get; }
-        public UserRole Role { get; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public string Username { get; private set; }
 
-        private GetTokenOwnerInfoResult(Guid id, string username, UserRole role)
-        {
-            Id = id;
-            Username = username;
-            Role = role;
-        }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public UserRole Role { get; private set; }
     }
 }

@@ -68,7 +68,10 @@
                 .WithLifetime(AccessTokenLifetime)
                 .Encode();
 
-            return new AccessTokenInfo(encodedAccessToken);
+            return new AccessTokenInfo
+            {
+                EncodedToken = encodedAccessToken
+            };
         }
 
         private RefreshTokenInfo IssueRefreshToken(Guid ownerId)
