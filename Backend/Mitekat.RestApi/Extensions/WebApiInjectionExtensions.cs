@@ -1,5 +1,7 @@
 ﻿namespace Mitekat.RestApi.Extensions
 {
+    using System.Reflection;
+    using FluentValidation.AspNetCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +11,11 @@
             services
                 .AddSwagger(configuration)
                 .AddAuthentication(configuration)
-                .AddControllers();
+                .AddControllers()
+                .AddFluentValidation(options =>
+                {
+                    options.DisableDataAnnotationsValidation = true;
+                    options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
+                });
     }
 }

@@ -8,6 +8,7 @@
     using Mitekat.Core.Features.Auth.GetTokenOwnerInfo;
     using Mitekat.Core.Features.Shared.Responses;
     using Mitekat.RestApi.Extensions;
+    using Mitekat.RestApi.Features.Auth.Dtos;
     using Mitekat.RestApi.Features.Shared;
 
     public class AuthController : ApiControllerBase

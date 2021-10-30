@@ -1,5 +1,6 @@
 ﻿namespace Mitekat.RestApi.Extensions
 {
+    using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -10,11 +11,13 @@
     internal static class SwaggerConfigurationExtensions
     {
         public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration) =>
-            services.AddSwaggerGen(options =>
-            {
-                options.AddApiInfo(configuration);
-                options.AddAuthentication();
-            });
+            services
+                .AddSwaggerGen(options =>
+                {
+                    options.AddApiInfo(configuration);
+                    options.AddAuthentication();
+                })
+                .AddFluentValidationRulesToSwagger();
 
         public static IApplicationBuilder UseSwagger(
             this IApplicationBuilder application,
