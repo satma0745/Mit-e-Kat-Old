@@ -1,6 +1,7 @@
 ﻿namespace Mitekat.RestApi.Features.Shared
 {
     using System;
+    using System.Collections;
     using System.Linq;
     using System.Net.Mime;
     using System.Security.Claims;
@@ -27,6 +28,28 @@
 
                 return new RequesterInfo(requesterId, requesterRole);
             }
+        }
+
+        public override BadRequestObjectResult BadRequest(object error)
+        {
+            var errors = error switch
+            {
+                IEnumerable => error,
+                _ => new[] {error}
+            };
+            
+            var problemDetails = new ProblemDetails()
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Title = "One or more validation errors occurred.",
+                Status = StatusCodes.Status400BadRequest,
+                Extensions =
+                {
+                    { "errors", errors }
+                }
+            };
+            
+            return new BadRequestObjectResult(problemDetails);
         }
 
         protected IActionResult InternalServerError() =>
