@@ -20,6 +20,12 @@
         public Task<UserEntity> FindAsync(string username) =>
             _context.Users.FirstOrDefaultAsync(user => user.Username == username);
 
+        public Task<bool> UsernameTakenAsync(string username) =>
+            _context.Users.AnyAsync(user => user.Username == username);
+
+        public Task<bool> UsernameTakenAsync(string username, Guid userIdToExclude) =>
+            _context.Users.AnyAsync(user => user.Username == username && user.Id != userIdToExclude);
+
         public void Add(UserEntity user) =>
             _context.Users.Add(user);
     }

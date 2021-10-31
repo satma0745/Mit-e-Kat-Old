@@ -31,6 +31,11 @@
                 return Failure(Error.NotFound);
             }
 
+            if (await _unitOfWork.Users.UsernameTakenAsync(request.Username, request.Id))
+            {
+                return Failure(Error.Conflict);
+            }
+
             var newPassword = _passwordHashingHelper.HashPassword(request.Password);
             user.Patch(request.Username, newPassword);
 

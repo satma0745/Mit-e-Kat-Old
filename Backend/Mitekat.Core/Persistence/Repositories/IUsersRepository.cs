@@ -10,6 +10,10 @@
 
         Task<UserEntity> FindAsync(string username);
 
+        Task<bool> UsernameTakenAsync(string username);
+
+        Task<bool> UsernameTakenAsync(string username, Guid userIdToExclude);
+
         void Add(UserEntity user);
     }
 }

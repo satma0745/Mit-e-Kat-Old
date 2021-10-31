@@ -39,7 +39,13 @@
         public Task<IActionResult> RegisterNewUser([FromBody] RegisterNewUserRequestDto dto) =>
             _mediator
                 .Send(_mapper.Map<RegisterNewUserRequest>(dto))
-                .ToActionResult();
+                .ToActionResult(
+                    _ => Ok(),
+                    error => error switch
+                    {
+                        Error.ConflictError => BadRequest(new { Username = "Username already taken" }),
+                        _ => InternalServerError()
+                    });
 
         [Authorize]
         [HttpPost("{userId:guid}/update")]
@@ -54,6 +60,7 @@
                     _ => Ok(),
                     error => error switch
                     {
+                        Error.ConflictError => BadRequest(new { Username = "Username already taken" }),
                         Error.AccessViolationError => Forbid(),
                         Error.NotFoundError => NotFound(),
                         _ => InternalServerError()

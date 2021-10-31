@@ -20,6 +20,11 @@
 
         protected override async Task<Response<BlankResult>> HandleAsync(RegisterNewUserRequest request)
         {
+            if (await _unitOfWork.Users.UsernameTakenAsync(request.Username))
+            {
+                return Failure(Error.Conflict);
+            }
+            
             var hashedPassword = _passwordHashingHelper.HashPassword(request.Password);
             var user = new UserEntity(request.Username, hashedPassword);
 
