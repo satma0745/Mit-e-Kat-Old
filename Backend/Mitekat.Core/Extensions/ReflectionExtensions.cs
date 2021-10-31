@@ -14,7 +14,8 @@
                 {
                     return true;
                 }
-                else if (currentType == baseTypeCandidate)
+
+                if (currentType == baseTypeCandidate)
                 {
                     return true;
                 }

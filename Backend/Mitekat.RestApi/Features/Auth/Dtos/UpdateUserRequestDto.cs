@@ -8,7 +8,7 @@
         [JsonPropertyName("username")]
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Username { get; set; }
-        
+
         [JsonPropertyName("password")]
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Password { get; set; }
@@ -22,7 +22,7 @@
                 .MinimumLength(6)
                 .MaximumLength(20)
                 .NotEmpty();
-            
+
             RuleFor(dto => dto.Password)
                 .MinimumLength(6)
                 .MaximumLength(20)

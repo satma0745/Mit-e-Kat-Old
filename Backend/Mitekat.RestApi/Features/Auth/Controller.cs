@@ -19,15 +19,15 @@
 
     public class AuthController : ApiControllerBase
     {
-        private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
         public AuthController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
         }
-        
+
         [Authorize]
         [HttpGet("who-am-i")]
         public Task<IActionResult> GetTokenOwnerInfo() =>

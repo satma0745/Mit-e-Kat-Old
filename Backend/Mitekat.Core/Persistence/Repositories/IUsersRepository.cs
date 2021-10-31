@@ -7,7 +7,7 @@
     public interface IUsersRepository
     {
         Task<UserEntity> FindAsync(Guid userId);
-        
+
         Task<UserEntity> FindAsync(string username);
 
         void Add(UserEntity user);

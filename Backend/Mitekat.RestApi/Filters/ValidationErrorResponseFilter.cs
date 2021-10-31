@@ -19,15 +19,15 @@
                 var validationErrors = context.ModelState
                     .Where(kvp => kvp.Value.Errors.Any())
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.First().ErrorMessage);
-                
-                var problemDetails = new ProblemDetails()
+
+                var problemDetails = new ProblemDetails
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
                     Title = "One or more validation errors occurred.",
                     Status = StatusCodes.Status400BadRequest,
                     Extensions =
                     {
-                        { "errors", validationErrors }
+                        {"errors", validationErrors}
                     }
                 };
                 context.Result = new BadRequestObjectResult(problemDetails);

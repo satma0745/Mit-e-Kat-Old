@@ -29,12 +29,12 @@
             Password = password;
         }
     }
-    
+
     public class UserPassword
     {
         public readonly string Hash;
         public readonly string Salt;
-        
+
         // For EF Core
         // ReSharper disable once UnusedMember.Local
         private UserPassword()
@@ -48,5 +48,10 @@
         }
     }
 
-    public enum UserRole { User, Moderator, Admin }
+    public enum UserRole
+    {
+        User,
+        Moderator,
+        Admin
+    }
 }

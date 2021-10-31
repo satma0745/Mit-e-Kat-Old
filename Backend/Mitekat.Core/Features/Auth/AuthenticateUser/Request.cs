@@ -6,7 +6,7 @@
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public string Username { get; private set; }
-        
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public string Password { get; private set; }
     }

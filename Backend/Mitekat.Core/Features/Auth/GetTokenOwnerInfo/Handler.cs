@@ -8,15 +8,15 @@
 
     internal class GetTokenOwnerInfoHandler : RequestHandlerBase<GetTokenOwnerInfoRequest, GetTokenOwnerInfoResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GetTokenOwnerInfoHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        
+
         protected override async Task<Response<GetTokenOwnerInfoResult>> HandleAsync(GetTokenOwnerInfoRequest request)
         {
             var tokenOwner = await _unitOfWork.Users.FindAsync(request.Requester.Id);

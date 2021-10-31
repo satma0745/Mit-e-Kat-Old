@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using MediatR;
     using Mitekat.Core.Features.Shared.Responses;
-    
+
     internal abstract class RequestHandlerBase<TRequest, TResult> : IRequestHandler<TRequest, Response<TResult>>
         where TRequest : IRequest<Response<TResult>>
     {

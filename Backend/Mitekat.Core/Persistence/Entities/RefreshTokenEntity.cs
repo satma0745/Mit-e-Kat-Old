@@ -4,8 +4,8 @@
 
     public class RefreshTokenEntity
     {
-        public readonly Guid TokenId;
         public readonly DateTime ExpirationTime;
+        public readonly Guid TokenId;
 
         // For EF Core
         // ReSharper disable once UnusedMember.Local

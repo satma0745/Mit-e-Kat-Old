@@ -15,16 +15,21 @@
         private JwtBuilder Token => JwtBuilder
             .Create()
             .WithAlgorithm(new HMACSHA512Algorithm())
-            .WithSecret(_authConfiguration.SecretKey)
+            .WithSecret(_secretKey)
             .MustVerifySignature();
-        
-        private TimeSpan AccessTokenLifetime => TimeSpan.FromMinutes(_authConfiguration.AccessTokenLifetimeInMinutes);
-        private TimeSpan RefreshTokenLifetime => TimeSpan.FromDays(_authConfiguration.RefreshTokenLifetimeInDays);
 
-        private readonly AuthConfiguration _authConfiguration;
+        private readonly string _secretKey;
+        private readonly TimeSpan _accessTokenLifetime;
+        private readonly TimeSpan _refreshTokenLifetime;
 
-        public AuthTokenHelper(IOptions<AuthConfiguration> authConfigurationOptions) =>
-            _authConfiguration = authConfigurationOptions.Value;
+        public AuthTokenHelper(IOptions<AuthConfiguration> authConfigurationOptions)
+        {
+            var authConfiguration = authConfigurationOptions.Value;
+
+            _secretKey = authConfiguration.SecretKey;
+            _accessTokenLifetime = TimeSpan.FromMinutes(authConfiguration.AccessTokenLifetimeInMinutes);
+            _refreshTokenLifetime = TimeSpan.FromDays(authConfiguration.RefreshTokenLifetimeInDays);
+        }
 
         public IRefreshTokenInfo ParseRefreshToken(string refreshToken)
         {
@@ -65,7 +70,7 @@
             var encodedAccessToken = Token
                 .WithOwnerId(ownerId)
                 .WithOwnerRole(ownerRole)
-                .WithLifetime(AccessTokenLifetime)
+                .WithLifetime(_accessTokenLifetime)
                 .Encode();
 
             return new AccessTokenInfo
@@ -80,10 +85,10 @@
             var encodedRefreshToken = Token
                 .WithOwnerId(ownerId)
                 .WithTokenId(refreshTokenId)
-                .WithLifetime(RefreshTokenLifetime)
+                .WithLifetime(_refreshTokenLifetime)
                 .Encode();
-            
-            var refreshTokenExpirationTime = DateTime.UtcNow.Add(RefreshTokenLifetime);
+
+            var refreshTokenExpirationTime = DateTime.UtcNow.Add(_refreshTokenLifetime);
             return new RefreshTokenInfo
             {
                 TokenId = refreshTokenId,

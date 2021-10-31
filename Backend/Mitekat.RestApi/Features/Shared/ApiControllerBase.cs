@@ -37,24 +37,22 @@
                 IEnumerable => error,
                 _ => new[] {error}
             };
-            
-            var problemDetails = new ProblemDetails()
+
+            var problemDetails = new ProblemDetails
             {
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
                 Title = "One or more validation errors occurred.",
                 Status = StatusCodes.Status400BadRequest,
                 Extensions =
                 {
-                    { "errors", errors }
+                    {"errors", errors}
                 }
             };
-            
+
             return new BadRequestObjectResult(problemDetails);
         }
 
         protected IActionResult InternalServerError() =>
             StatusCode(StatusCodes.Status500InternalServerError);
-
-        private record RequesterInfo(Guid Id, UserRole Role) : IRequester;
     }
 }

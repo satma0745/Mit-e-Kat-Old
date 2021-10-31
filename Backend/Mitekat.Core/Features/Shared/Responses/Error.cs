@@ -7,7 +7,7 @@
         public static readonly AccessViolationError AccessViolation = new();
         public static readonly ConflictError Conflict = new();
         public static readonly UnhandledError Unhandled = new();
-        
+
         private Error()
         {
         }

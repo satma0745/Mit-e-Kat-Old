@@ -5,11 +5,9 @@
     public class AuthenticateUserResultDto
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        [JsonPropertyName("accessToken")]
-        public string AccessToken { get; private set; }
-        
+        [JsonPropertyName("accessToken")] public string AccessToken { get; private set; }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        [JsonPropertyName("refreshToken")]
-        public string RefreshToken { get; private set; }
+        [JsonPropertyName("refreshToken")] public string RefreshToken { get; private set; }
     }
 }

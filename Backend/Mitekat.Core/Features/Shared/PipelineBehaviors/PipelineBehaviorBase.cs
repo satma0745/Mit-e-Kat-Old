@@ -34,11 +34,11 @@
 
             var requestType = typeof(TAnyRequest);
             var resultType = typeof(TResponse).GenericTypeArguments.Single();
-            
+
             var handleAsyncMethod = GetType()
                 .GetMethod(methodName, methodType)!
                 .MakeGenericMethod(requestType, resultType);
-            
+
             return (Task<TResponse>) handleAsyncMethod.Invoke(this, new object[] {request, next});
         }
 

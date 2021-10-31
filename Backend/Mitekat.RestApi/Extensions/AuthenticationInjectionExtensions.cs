@@ -15,12 +15,12 @@
         {
             var authConfig = configuration.GetSection("Auth").Get<AuthConfiguration>();
             var secretBytes = Encoding.ASCII.GetBytes(authConfig.SecretKey);
-            
+
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters()
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
                         RequireSignedTokens = true,
                         ValidateIssuerSigningKey = true,
@@ -33,10 +33,10 @@
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero
                     };
-                    
+
                     options.RequireHttpsMetadata = false;
                 });
-            
+
             return services;
         }
 

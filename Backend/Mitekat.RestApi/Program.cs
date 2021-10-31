@@ -24,7 +24,7 @@ namespace Mitekat.RestApi
                 Log.Fatal(exception, "Host terminated unexpectedly");
                 return 1;
             }
-            
+
             return 0;
         }
 

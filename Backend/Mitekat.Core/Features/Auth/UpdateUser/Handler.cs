@@ -9,8 +9,8 @@
 
     internal class UpdateUserHandler : RequestHandlerBase<UpdateUserRequest, BlankResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHashingHelper _passwordHashingHelper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public UpdateUserHandler(IUnitOfWork unitOfWork, IPasswordHashingHelper passwordHashingHelper)
         {

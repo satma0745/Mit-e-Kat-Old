@@ -10,13 +10,13 @@
     {
         public IUsersRepository Users { get; }
         public IRefreshTokensRepository RefreshTokens { get; }
-        
+
         private readonly DatabaseContext _context;
 
         public UnitOfWork(DatabaseContext context)
         {
             _context = context;
-            
+
             Users = new UsersRepository(context);
             RefreshTokens = new RefreshTokensRepository(context);
         }

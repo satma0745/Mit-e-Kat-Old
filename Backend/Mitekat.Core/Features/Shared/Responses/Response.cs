@@ -1,6 +1,6 @@
 ﻿namespace Mitekat.Core.Features.Shared.Responses
 {
-    public record Response<TResult>
+    public class Response<TResult>
     {
         public static Response<TResult> Success(TResult result) =>
             new(true, result, default);
@@ -11,7 +11,7 @@
         public bool IsSuccess { get; }
         public TResult Result { get; }
         public Error Error { get; }
-        
+
         private Response(bool isSuccess, TResult result, Error error)
         {
             IsSuccess = isSuccess;

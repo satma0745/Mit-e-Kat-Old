@@ -10,8 +10,7 @@
     {
         private readonly OpenApiSecurityRequirement _authenticationRequirement;
 
-        public SwaggerPadlockIndicatorFilter()
-        {
+        public SwaggerPadlockIndicatorFilter() =>
             _authenticationRequirement = new OpenApiSecurityRequirement
             {
                 {
@@ -26,15 +25,14 @@
                     Array.Empty<string>()
                 }
             };
-        }
-        
+
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             var actionMetadata = context.ApiDescription.ActionDescriptor.EndpointMetadata;
-            
+
             var markedWithAuthorize = actionMetadata.Any(metadataItem => metadataItem is AuthorizeAttribute);
             var markedWithAllowAnonymous = actionMetadata.Any(metadataItem => metadataItem is AllowAnonymousAttribute);
-            
+
             if (!markedWithAuthorize || markedWithAllowAnonymous)
             {
                 return;

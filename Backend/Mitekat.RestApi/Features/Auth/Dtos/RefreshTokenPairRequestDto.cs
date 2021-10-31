@@ -9,7 +9,7 @@
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string RefreshToken { get; set; }
     }
-    
+
     internal class RefreshTokenRequestDtoValidator : AbstractValidator<RefreshTokenPairRequestDto>
     {
         public RefreshTokenRequestDtoValidator() =>

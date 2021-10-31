@@ -10,9 +10,9 @@
 
     internal class RefreshTokenPairHandler : RequestHandlerBase<RefreshTokenPairRequest, RefreshTokenPairResult>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IAuthTokenHelper _authTokenHelper;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RefreshTokenPairHandler(IUnitOfWork unitOfWork, IAuthTokenHelper authTokenHelper, IMapper mapper)
         {
@@ -20,7 +20,7 @@
             _authTokenHelper = authTokenHelper;
             _mapper = mapper;
         }
-        
+
         protected override async Task<Response<RefreshTokenPairResult>> HandleAsync(RefreshTokenPairRequest request)
         {
             var oldRefreshTokenInfo = _authTokenHelper.ParseRefreshToken(request.RefreshToken);
@@ -46,8 +46,10 @@
 
             var newTokenPairInfo = _authTokenHelper.IssueTokenPair(tokenOwner.Id, tokenOwner.Role);
             var newRefreshTokenInfo = newTokenPairInfo.RefreshToken;
-            
-            var newRefreshToken = new RefreshTokenEntity(newRefreshTokenInfo.TokenId, newRefreshTokenInfo.ExpirationTime);
+
+            // TODO: Use mapping
+            var newRefreshToken =
+                new RefreshTokenEntity(newRefreshTokenInfo.TokenId, newRefreshTokenInfo.ExpirationTime);
             _unitOfWork.RefreshTokens.Replace(oldRefreshToken, newRefreshToken);
             await _unitOfWork.SaveChangesAsync();
 

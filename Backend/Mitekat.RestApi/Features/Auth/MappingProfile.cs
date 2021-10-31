@@ -16,7 +16,7 @@
             CreateMap<RefreshTokenPairRequestDto, RefreshTokenPairRequest>();
             CreateMap<RegisterNewUserRequestDto, RegisterNewUserRequest>();
             CreateMap<UpdateUserRequestDto, UpdateUserRequest>();
-            
+
             CreateMap<AuthenticateUserResult, AuthenticateUserResultDto>();
             CreateMap<GetTokenOwnerInfoResult, GetTokenOwnerInfoResultDto>()
                 .ForMember(dto => dto.Role, config => config.MapFrom(result => result.Role.ToString()));

@@ -23,13 +23,13 @@
             var connectionString = dbConfig.ConnectionString;
 
             var migrationsAssembly = Assembly.GetExecutingAssembly().FullName;
-            
-            services.AddDbContext<DatabaseContext>(contextOptions => 
+
+            services.AddDbContext<DatabaseContext>(contextOptions =>
                 contextOptions.UseNpgsql(connectionString, options => options.MigrationsAssembly(migrationsAssembly)));
 
             return services;
         }
-        
+
         private class DatabaseConfiguration
         {
             public string Server { get; set; }

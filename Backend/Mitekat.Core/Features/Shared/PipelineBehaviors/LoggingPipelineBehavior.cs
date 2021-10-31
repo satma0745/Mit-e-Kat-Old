@@ -23,11 +23,11 @@
             var stopwatch = Stopwatch.StartNew();
             var response = await next();
             stopwatch.Stop();
-            
+
             _logger.LogInformation(
                 message: "Request #{RequestId} handled in {ElapsedTime}ms",
-                args: new object[] { request.RequestId, stopwatch.ElapsedMilliseconds });
-            
+                args: new object[] {request.RequestId, stopwatch.ElapsedMilliseconds});
+
             return response;
         }
     }

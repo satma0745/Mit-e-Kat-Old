@@ -10,7 +10,7 @@
                 .MinimumLength(6)
                 .MaximumLength(20)
                 .NotEmpty();
-            
+
             RuleFor(request => request.Password)
                 .MinimumLength(6)
                 .MaximumLength(20)

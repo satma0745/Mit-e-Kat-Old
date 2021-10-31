@@ -4,12 +4,12 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Mitekat.Core.Persistence.Entities;
 
-    internal class UserEntityTypeConfiguration: IEntityTypeConfiguration<UserEntity>
+    internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         public void Configure(EntityTypeBuilder<UserEntity> userBuilder)
         {
             userBuilder.ToTable("users");
-            
+
             userBuilder.HasKey(user => user.Id);
             userBuilder.HasIndex(user => user.Username).IsUnique();
 
